@@ -1,0 +1,115 @@
+name: Organization Migration to NeoNephos Enterprise
+description: Migration plan and communication for transferring a GitHub organization to the NeoNephos Enterprise
+title: "migration: Transfer of <ORG_NAME> to NeoNephos Enterprise"
+labels: ["migration"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Organization Migration to NeoNephos Enterprise
+
+        The transfer of the **[ORG_NAME](https://github.com/ORG_NAME)** organization to the [NeoNephos GitHub Enterprise](https://github.com/enterprises/neonephos) is scheduled. We are targeting to migrate within the next days.
+
+  - type: input
+    id: org-name
+    attributes:
+      label: Organization
+      description: GitHub organization slug (e.g., openmcp-project)
+      placeholder: org-name
+    validations:
+      required: true
+
+  - type: input
+    id: org-url
+    attributes:
+      label: Organization URL
+      description: Full GitHub URL
+      placeholder: https://github.com/org-name
+    validations:
+      required: true
+
+  - type: input
+    id: target-date
+    attributes:
+      label: Target migration date
+      placeholder: "YYYY-MM-DD"
+    validations:
+      required: true
+
+  - type: textarea
+    id: contacts
+    attributes:
+      label: Enterprise contacts
+      description: Who will retain emergency owner access
+      placeholder: |
+        - @username1
+        - @username2
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ## What will happen
+
+        - The ownership of the organization will migrate to https://github.com/enterprises/neonephos
+        - You will assume full ownership of the organization.
+        - The OSPO will no longer enforce policies on your organization. Until the TAC/Project decides to adopt its own outbound/new repo creation process (in whatever form) and DCO/CLA process, the existing processes/tooling remain in place (enforced by you).
+
+        ## What does this mean for you
+
+        ### User Management
+
+        - SAP User Management will be unlinked from the organization. You will need to set up your own user and group management. There will no longer be automated onboarding if you relied on this.
+
+        ### Enterprise Admin Access
+
+        - The enterprise contacts listed above will retain the right to make themselves owners of the organization on demand to address urgent policy issues. They will not interfere with your account setup otherwise.
+
+        ### GitHub Advanced Security
+
+        - You will no longer have access to GitHub Advanced Security for private repositories. This is a cost-based restriction to limit billing amount.
+
+        ### Billing and CI
+
+        - You will have a billing restriction of **$500/month** for private repository CI and custom runners until further budget is available to our enterprise.
+        - It is recommended to strictly review any non-standard runner usage if present and reduce it as much as possible.
+
+        ### Policies
+
+        - You will not have any enforced policies from the enterprise at the current time. If you are interested in upcoming developments of guidelines and restrictions, please take a look at the [NeoNephos Project Guidelines](https://github.com/neonephos/guidelines-development/blob/main/project-guidelines/project-guidelines.md) where we are setting up official guidelines. Until these have been approved in the TAC, they are not binding.
+
+        ### Code of Conduct
+
+        - You will need to adopt the [NeoNephos Code of Conduct](https://github.com/neonephos/.github/blob/main/CODE_OF_CONDUCT.md) instead of the SAP one in your repositories.
+
+        ---
+
+  - type: checkboxes
+    id: migration-checklist
+    attributes:
+      label: Migration checklist
+      description: Track progress of the migration
+      options:
+        - label: Organization transfer initiated in GitHub Enterprise settings
+        - label: Organization appears under NeoNephos Enterprise
+        - label: SAP User Management unlinked
+        - label: Enterprise contacts confirmed as org owners
+        - label: GHAS disabled for private repos
+        - label: Billing limit configured ($500/month)
+        - label: Project notified of Code of Conduct requirement
+        - label: Project notified of guidelines-development reference
+        - label: Migration confirmed complete with project maintainers
+
+  - type: checkboxes
+    id: project-acknowledgement
+    attributes:
+      label: Project acknowledgement
+      description: To be checked by the project's TSC or maintainers
+      options:
+        - label: We acknowledge the user management changes
+        - label: We acknowledge the GHAS restrictions
+        - label: We acknowledge the billing restrictions
+        - label: We will adopt the NeoNephos Code of Conduct
