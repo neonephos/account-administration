@@ -1,7 +1,0 @@
-# Controls which repos safe-settings manages
-# Docs: https://github.com/github/safe-settings/blob/main-enterprise/docs/deploy.md
-
-restrictedRepos:
-  exclude:
-    - account-administration
-    - .github
