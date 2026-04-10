@@ -56,8 +56,8 @@ body:
 
         - The ownership of the organization will migrate to https://github.com/enterprises/neonephos
         - You will assume full ownership of the organization.
-        - The OSPO of your company will no longer enforce policies on your organization. 
-          Until the TAC/Project decides to adopt its own outbound/new repo creation process (in whatever form) 
+        - Your originating enterprise will no longer enforce policies on your organization.
+          Until the TAC/Project decides to adopt its own outbound/new repo creation process (in whatever form)
           and DCO/CLA process, the existing processes/tooling remain in place (enforced by you).
 
         ## What does this mean for you
@@ -91,12 +91,16 @@ body:
       label: Migration checklist
       description: Track progress of the migration
       options:
+        - label: Enterprise seat count verified as sufficient for incoming members
         - label: Organization transfer initiated in GitHub Enterprise settings
         - label: Organization appears under NeoNephos Enterprise
         - label: Existing User Management unlinked
         - label: Enterprise contacts confirmed as org owners
-        - label: GHAS disabled for private repos
+        - label: GHAS disabled for private repos (Billing and Licensing → Advanced Security → Manage and disable advanced security)
+        - label: Usage budget configured for the organization
         - label: Billing limit configured ($500/month)
+        - label: Billing dashboard monitored for unexpected charges (Secret Protection, etc.)
+        - label: CLA/DCO tooling confirmed functional post-migration
         - label: Project notified of Code of Conduct requirement
         - label: Project notified of guidelines-development reference
         - label: Migration confirmed complete with project maintainers

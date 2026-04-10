@@ -18,6 +18,8 @@ Ensure the following prerequisites are met before initiating a migration:
 - At least two enterprise contacts with GitHub accounts are identified to retain emergency owner access.
 - The project maintainers (TSC or equivalent) have reviewed and acknowledged this guideline.
 - A target migration date has been agreed upon.
+- Verify that sufficient **enterprise seat capacity** exists. The seat count must be sufficient. If capacity is insufficient, request a seat increase from enterprise administrators before proceeding.
+
 
 ---
 
@@ -27,11 +29,11 @@ Ensure the following prerequisites are met before initiating a migration:
 
 - Ownership of the organization moves to the NeoNephos Enterprise.
 - The project assumes **full ownership** of the organization within the enterprise.
-- The originating OSPO will no longer enforce policies on the organization.
+- The originating enterprise will no longer enforce policies on the organization.
 
 ### User Management
 
-- Any automated user management (e.g., automated onboarding, group sync) linked to the previous enterprise or OSPO **will be unlinked**.
+
 - Projects must establish their own user and group management processes.
 - There is no automated onboarding mechanism provided by NeoNephos at this time.
 
@@ -52,6 +54,21 @@ Ensure the following prerequisites are met before initiating a migration:
 - Projects relying on GHAS for private repositories must make alternative arrangements (e.g., using public repositories where feasible, or procuring a separate GHAS license).
 - GHAS features remain available for **public repositories** as part of GitHub's standard offering for open source projects.
 
+### Why This Matters — Billing Impact
+
+GitHub **Secret Protection** (part of Advanced Security) is billed **per active committer per month** on private repositories. This cost is incurred automatically when Advanced Security is enabled and can escalate rapidly — for an organization with a large number of members.
+
+### How to Disable GHAS for Private Repos (Enterprise Admin)
+
+After migration, enterprise administrators must immediately verify and configure GHAS:
+
+1. Navigate to **Enterprise Settings → Billing and Licensing → Advanced Security**.
+2. Select **"Manage and disable advanced security"**.
+3. Disable Advanced Security for **private and internal repositories**.
+4. Confirm that public repositories remain protected (this is free and automatic).
+
+> **Important:** Monitor the enterprise billing dashboard for several days after migration to catch any unexpected charges. The billing for Secret Protection can start accruing immediately upon transfer.
+
 ---
 
 ## Billing and CI
@@ -64,6 +81,10 @@ Organizations migrated to NeoNephos Enterprise are subject to a **$500/month bil
 - Custom/self-hosted runner usage billed through GitHub
 
 This limit is in place due to current constraints on the enterprise budget and is subject to revision as additional budget becomes available.
+
+### Usage Budget
+
+Each organization is assigned a **usage budget** at the enterprise level, which governs the total GitHub Actions and related compute allocation. This is configured during migration by the enterprise administrator. If your organization needs a higher usage budget, request it via the enterprise administrators.
 
 ### What This Means in Practice
 
@@ -104,8 +125,46 @@ Areas expected to be covered by future guidelines include:
 - New repository creation processes
 - DCO/CLA enforcement
 - Code of Conduct requirements
+- SPDX-compliant license identifiers
 
-Until the project adopts its own outbound and DCO/CLA processes (in any form), the processes previously enforced by the originating OSPO **remain in place and are the project's responsibility to maintain**.
+Until the project adopts its own outbound and DCO/CLA processes (in any form), the processes previously enforced by the originating enterprise **remain in place and are the project's responsibility to maintain**. The originating enterprise has committed to keeping their processes running until the foundation explicitly replaces or removes them.
+
+### CLA and DCO Compliance
+
+Projects migrating with an existing CLA or DCO setup (e.g., CLA Assistant with Developer Certificate of Origin) should **keep the existing setup in place during migration**. The CLA Assistant is open source and not tied to any specific enterprise, so it continues to function after transfer.
+
+The foundation is evaluating replacement tooling, which may include:
+
+- **Linux Foundation's EasyCLA**
+- **DCO sign-off trailers** (as used by projects like OpenSearch)
+
+Each project may decide on its own CLA/DCO approach in the interim. A foundation-wide decision is pending TAC approval.
+
+---
+
+## Post-Migration Verification (with Project owners)
+
+After migration is complete, the following should be verified:
+
+1. **Billing monitoring** — Monitor the enterprise billing dashboard daily for at least one week after migration. Watch for unexpected charges from Advanced Security, Actions minutes, or storage.
+2. **GHAS configuration** — Confirm that Advanced Security is disabled for private repos and enabled for public repos.
+3. **Public/private repo transitions** — Test what happens when a private repository is made public: verify that GHAS features (secret scanning, code scanning) auto-apply as expected. (One off task)
+4. **User access** — Confirm that all members have access and that no automated sync from the previous enterprise is still running.
+5. **CI workflows** — Verify that GitHub Actions workflows are running correctly and that spending is within the allocated budget.
+6. **CLA/DCO tooling** — Confirm that any existing CLA or DCO enforcement (e.g., CLA Assistant) is still functioning on pull requests.
+
+Report any post-migration issues to the originating enterprise contact or to the NeoNephos enterprise administrators.
+
+---
+
+## Lessons Learned from Past Migrations
+
+The following observations come from early migrations into the NeoNephos Enterprise:
+
+- **GHAS billing is immediate.** Secret Protection billing started accruing the moment organizations were transferred. The disable setting is not in the obvious location — it is under `Billing and Licensing → Advanced Security → Manage and disable advanced security`, not under the organization's security settings.
+- **Seat count must be pre-configured.** Ensure the enterprise seat count accommodates all contributors across all organizations before migration. Organizations can have a lot of members each, with overlap between them.
+- **Migrate one org at a time.** Transfer the first organization as a test case before proceeding with additional ones. This sequential approach allows issues (like the billing surprise) to be caught and resolved before the next transfer.
+- **Keep the originating enterprise in the loop.** Having a representative from the originating enterprise on the migration call proved essential for troubleshooting enterprise-level settings.
 
 ---
 
@@ -116,13 +175,14 @@ There is an issue template in this repository containing a check list.
 
 ## Summary of Restrictions
 
-| Area                          | Restriction             | Reason                          |
-|-------------------------------|-------------------------|---------------------------------|
-| GHAS (private repos)          | Not available           | Cost control                    |
-| Monthly CI spend              | $500/month cap          | Enterprise budget constraint    |
-| Custom runners                | Counted toward $500 cap | Cost control                    |
-| Enterprise policy enforcement | None currently          | Guidelines pending TAC approval |
-| User management automation    | Not provided            | Org takes full ownership        |
+| Area                          | Restriction                         | Reason                          |
+|-------------------------------|-------------------------------------|---------------------------------|
+| GHAS (private repos)          | Not available                       | Cost control                    |
+| Monthly CI spend              | $500/month cap                      | Enterprise budget constraint    |
+| Custom runners                | Counted toward $500 cap             | Cost control                    |
+| Enterprise policy enforcement | None currently                      | Guidelines pending TAC approval |
+| User management automation    | Not provided                        | Org takes full ownership        |
+| CLA/DCO tooling               | Existing setup retained temporarily | Foundation tooling pending TAC  |
 
 ---
 
