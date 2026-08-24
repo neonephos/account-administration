@@ -8,7 +8,7 @@ Tooling and process for administering organizations in the
 - **Member, team & permission management** — managed as code with
   [Peribolos](https://docs.prow.k8s.io/docs/components/cli-tools/peribolos/).
   Each org's membership lives in `orgs/<org>/org.yaml`; changes go through a PR
-  that dry-runs the plan, and apply happens on merge.
+  that runs a dry-run reconcile, and apply happens on merge.
   See [docs/peribolos-setup.md](docs/peribolos-setup.md).
 - **Org migration** — guideline and issue template for transferring an
   organization into the enterprise. See
@@ -18,7 +18,7 @@ Tooling and process for administering organizations in the
 
 ```bash
 # Dry-run what would change for an org (needs GITHUB_TOKEN with org admin scope)
-task plan ORG=neonephos
+task reconcile ORG=neonephos
 
 # Validate all org configs (no network)
 task validate
@@ -32,7 +32,7 @@ schema are documented in [docs/peribolos-setup.md](docs/peribolos-setup.md).
 
 ```
 orgs/<org>/org.yaml         # source of truth: members, admins, teams, permissions
-Taskfile.yml                # validate / dump / plan / apply (needs go-task)
+Taskfile.yml                # validate / dump / reconcile (needs go-task)
 admin/github-app/           # GitHub App creation guide
 .github/workflows/          # peribolos.yml (PR dry-run + apply on merge)
 CODEOWNERS                  # approval gates

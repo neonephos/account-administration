@@ -112,4 +112,4 @@ jobs:
         env:
           CONFIRM: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: task apply ORG=${{ matrix.org }} CONFIRM="$CONFIRM"
+        run: task reconcile ORG=${{ matrix.org }} CONFIRM="$CONFIRM"

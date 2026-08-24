@@ -51,7 +51,7 @@ CODEOWNERS              # who approves what
 **Local prerequisites:** [go-task](https://taskfile.dev) (`task`), Docker, and a
 `GITHUB_TOKEN` with org admin scope. `GITHUB_TOKEN` is a global Task variable
 that defaults to your shell environment (`export GITHUB_TOKEN=...`) and can be
-overridden inline (`task plan ORG=<org> GITHUB_TOKEN=...`); `.taskrc.yml` enables
+overridden inline (`task reconcile ORG=<org> GITHUB_TOKEN=...`); `.taskrc.yml` enables
 Task's [env-precedence experiment](https://taskfile.dev/docs/experiments/env-precedence)
 so an overridden value wins over a stale OS value. CI installs Task
 automatically.
@@ -134,17 +134,17 @@ The plan check must pass; a CODEOWNER approves; merge applies it.
 
 ```bash
 export GITHUB_TOKEN=...
-task plan ORG=<org>
+task reconcile ORG=<org>
 ```
 
 ### Apply locally (rarely needed — CI does this)
 
 ```bash
 # Dry-run (default: CONFIRM=false — safe, mutates nothing)
-task apply ORG=<org>
+task reconcile ORG=<org>
 
 # Actually mutate GitHub
-task apply ORG=<org> CONFIRM=true
+task reconcile ORG=<org> CONFIRM=true
 ```
 
 ---
@@ -153,7 +153,7 @@ task apply ORG=<org> CONFIRM=true
 
 | Flag | Default | Purpose |
 | ------ | --------- | --------- |
-| `--confirm` | `CONFIRM=false` | No mutations unless `CONFIRM=true`. Local `task apply` is a dry-run by default; the `peribolos` workflow passes `CONFIRM=true` on push to `main` (PRs stay dry-run). |
+| `--confirm` | `CONFIRM=false` | No mutations unless `CONFIRM=true`. Local `task reconcile` is a dry-run by default; the `peribolos` workflow passes `CONFIRM=true` on push to `main` (PRs stay dry-run). |
 | `--maximum-removal-delta` | `0.25` | Refuse runs deleting >25% of memberships (typo guard) |
 | `--min-admins` | `2` | Refuse a config with fewer than 2 admins (lockout guard) |
 | `--require-self` | `false` | If true, the bot must be an admin to apply |
