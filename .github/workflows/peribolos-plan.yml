@@ -24,14 +24,34 @@ permissions:
   contents: read
 
 jobs:
+  # Discover the orgs to plan by listing orgs/*/org.yaml, and emit them as a
+  # JSON array for the matrix below. Adding orgs/<org>/org.yaml is all it takes
+  # to onboard a new org — no workflow edit needed.
+  discover-orgs:
+    runs-on: ubuntu-latest
+    outputs:
+      orgs: ${{ steps.list.outputs.orgs }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: List org configs
+        id: list
+        run: |
+          orgs=$(find orgs -mindepth 2 -maxdepth 2 -name org.yaml -printf '%h\n' \
+            | xargs -r -n1 basename \
+            | sort \
+            | jq -R . | jq -sc .)
+          echo "orgs=$orgs" >> "$GITHUB_OUTPUT"
+          echo "discovered orgs: $orgs"
+
   plan:
+    needs: discover-orgs
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      # One dry-run per org config. Add orgs here as they onboard.
       matrix:
-        org:
-          - neonephos
+        org: ${{ fromJSON(needs.discover-orgs.outputs.orgs) }}
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
