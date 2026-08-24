@@ -7,18 +7,13 @@ helps you create it.
 ## Create the App (one-time, ~5 min, browser required)
 
 App creation and the private key can only be done in the browser — the private
-key is shown exactly once and cannot be retrieved via API. Use the manifest flow
-below so the permissions are pre-filled.
-
-### Option A — manifest flow (recommended)
+key is shown exactly once and cannot be retrieved via API.
 
 1. Open this URL (creates the App **owned by the `neonephos` org**):
 
    <https://github.com/organizations/neonephos/settings/apps/new>
 
-2. Or, to pre-fill everything, POST the manifest in `app-manifest.json` via
-   GitHub's App manifest flow. The simplest path is the UI form below with these
-   exact settings.
+2. Fill in the form with the settings below.
 
 ### Required settings
 
