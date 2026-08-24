@@ -20,9 +20,10 @@ orgs/<org>/org.yaml   ──PR──▶  review + CODEOWNERS approval  ──mer
 
 1. Each org has one file: `orgs/<org>/org.yaml` — the **single source of truth**
    for that org's settings, members, admins, teams, and team membership.
-2. A PR that edits it triggers `peribolos-plan` — a **dry-run** that posts the
-   exact planned changes as a PR comment. No mutations happen.
-3. A CODEOWNER approves. On merge to `main`, `peribolos-apply` runs
+2. A PR that edits it triggers the `peribolos` workflow in **dry-run** mode — a
+   `peribolos reconcile` check that mutates nothing; a green check is the signal.
+3. A CODEOWNER approves. On merge to `main`, the same workflow runs in **apply**
+   mode (`CONFIRM=true`)
    `peribolos --confirm` and reconciles GitHub to match the file.
 
 > **Authoritative membership:** removing a user from `members`/`admins` in the
@@ -41,10 +42,9 @@ orgs/
 Taskfile.yml             # validate / dump / plan / apply tasks
 .taskrc.yml              # enables the env-precedence experiment
 admin/
-  update.sh             # local wrapper (dry-run by default)
+  github-app/           # GitHub App creation guide
 .github/workflows/
-  peribolos-plan.yml    # dry-run on PRs (pass/fail is the signal)
-  peribolos-apply.yml   # apply on merge to main
+  peribolos.yml         # PR = dry-run; push to main = apply
 CODEOWNERS              # who approves what
 ```
 
@@ -103,9 +103,9 @@ with real teams/users.
    (e.g. `billing_email`), and review the member/admin/team lists.
 3. Add the org to the `matrix.org` list in **both** workflow files and add a
    `CODEOWNERS` line for `orgs/<org>/`.
-4. Open a PR. Confirm the `peribolos-plan` check passes and its job log shows
+4. Open a PR. Confirm the `peribolos` check passes and its job log shows
    **no destructive changes** (a freshly-dumped config should be a near no-op).
-5. Merge. `peribolos-apply` reconciles.
+5. Merge. The `peribolos` workflow reconciles in apply mode.
 
 ---
 
@@ -134,7 +134,7 @@ The plan check must pass; a CODEOWNER approves; merge applies it.
 
 ```bash
 export GITHUB_TOKEN=...
-task plan ORG=<org>          # or: ./admin/update.sh <org>
+task plan ORG=<org>
 ```
 
 ### Apply locally (rarely needed — CI does this)
@@ -144,7 +144,7 @@ task plan ORG=<org>          # or: ./admin/update.sh <org>
 task apply ORG=<org>
 
 # Actually mutate GitHub
-task apply ORG=<org> CONFIRM=true   # or: ./admin/update.sh <org> --confirm
+task apply ORG=<org> CONFIRM=true
 ```
 
 ---
@@ -153,7 +153,7 @@ task apply ORG=<org> CONFIRM=true   # or: ./admin/update.sh <org> --confirm
 
 | Flag | Default | Purpose |
 | ------ | --------- | --------- |
-| `--confirm` | `CONFIRM=false` | No mutations unless `CONFIRM=true`. Local `task apply` is a dry-run by default; the `peribolos-apply.yml` workflow passes `CONFIRM=true` on merge to `main`. |
+| `--confirm` | `CONFIRM=false` | No mutations unless `CONFIRM=true`. Local `task apply` is a dry-run by default; the `peribolos` workflow passes `CONFIRM=true` on push to `main` (PRs stay dry-run). |
 | `--maximum-removal-delta` | `0.25` | Refuse runs deleting >25% of memberships (typo guard) |
 | `--min-admins` | `2` | Refuse a config with fewer than 2 admins (lockout guard) |
 | `--require-self` | `false` | If true, the bot must be an admin to apply |

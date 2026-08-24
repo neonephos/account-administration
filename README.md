@@ -33,8 +33,8 @@ schema are documented in [docs/peribolos-setup.md](docs/peribolos-setup.md).
 ```
 orgs/<org>/org.yaml         # source of truth: members, admins, teams, permissions
 Taskfile.yml                # validate / dump / plan / apply (needs go-task)
-admin/update.sh             # local wrapper (dry-run by default)
-.github/workflows/          # peribolos-plan (PR dry-run) + peribolos-apply (on merge)
+admin/github-app/           # GitHub App creation guide
+.github/workflows/          # peribolos.yml (PR dry-run + apply on merge)
 CODEOWNERS                  # approval gates
 docs/                       # setup + migration guides
 ```
