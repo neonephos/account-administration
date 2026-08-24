@@ -99,10 +99,13 @@ with real teams/users.
    task dump ORG=<org> > orgs/<org>/org.yaml
    ```
 
-2. **Trim** the dumped file — delete anything you don't want Peribolos to manage
-   (e.g. `billing_email`), and review the member/admin/team lists.
-3. Add the org to the `matrix.org` list in **both** workflow files and add a
-   `CODEOWNERS` line for `orgs/<org>/`.
+2. **Trim** the dumped file to just `admins`, `members`, and `teams` (drop the
+   org-metadata fields like `billing_email`/`default_repository_permission` and
+   any `repos:` block — peribolos runs without `--fix-org`/`--fix-repos`, and
+   editing org settings needs an App permission the peribolos App does not
+   hold). Review the member/admin/team lists.
+3. Add a `CODEOWNERS` line for `orgs/<org>/`. The workflow discovers orgs from
+   `orgs/*/org.yaml` automatically — no workflow edit needed.
 4. Open a PR. Confirm the `peribolos` check passes and its job log shows
    **no destructive changes** (a freshly-dumped config should be a near no-op).
 5. Merge. The `peribolos` workflow reconciles in apply mode.
@@ -194,9 +197,11 @@ Full schema: <https://docs.prow.k8s.io/docs/components/cli-tools/peribolos/>
 
 ## Notes / limitations
 
-- Peribolos manages **org settings, members, teams, and team membership**. It
-  does **not** manage repository creation, branch protection, or rulesets. For
-  centrally-enforced repo policy, pair it with
+- This setup manages **org membership (admins/members), teams, and team
+  membership** only. It does **not** manage org settings (`--fix-org` is off:
+  editing org metadata needs an App permission the peribolos App doesn't hold),
+  nor repositories, branch protection, or rulesets. For centrally-enforced repo
+  policy, pair it with
   [`github/safe-settings`](https://github.com/github/safe-settings) later.
 - Usernames are GitHub login handles (lowercase, no `@`).
 - The `peribolos` container image tag is pinned in the `Taskfile`
