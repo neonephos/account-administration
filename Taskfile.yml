@@ -25,6 +25,9 @@ vars:
   MIN_ADMINS: '{{.MIN_ADMINS | default "2"}}'
   MAX_REMOVAL_DELTA: '{{.MAX_REMOVAL_DELTA | default "0.25"}}'
   REQUIRE_SELF: '{{.REQUIRE_SELF | default "false"}}'
+  # Whether peribolos actually MUTATES GitHub. Defaults to false so a local
+  # `task apply` is a safe dry-run; CI (peribolos-apply.yml) overrides CONFIRM=true.
+  CONFIRM: '{{.CONFIRM | default "false"}}'
 
 tasks:
   default:
@@ -79,7 +82,7 @@ tasks:
         --require-self={{.REQUIRE_SELF}}
 
   apply:
-    desc: "APPLY the config to GitHub (mutates! adds --confirm) — needs ORG=<org>"
+    desc: "APPLY the config to GitHub — dry-run unless CONFIRM=true — needs ORG=<org>"
     requires:
       vars: [ORG]
     preconditions:
@@ -98,4 +101,4 @@ tasks:
         --min-admins={{.MIN_ADMINS}}
         --maximum-removal-delta={{.MAX_REMOVAL_DELTA}}
         --require-self={{.REQUIRE_SELF}}
-        --confirm
+        --confirm={{.CONFIRM}}

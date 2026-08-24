@@ -136,7 +136,11 @@ task plan ORG=<org>          # or: ./admin/update.sh <org>
 ### Apply locally (rarely needed — CI does this)
 
 ```bash
-task apply ORG=<org>         # or: ./admin/update.sh <org> --confirm
+# Dry-run (default: CONFIRM=false — safe, mutates nothing)
+task apply ORG=<org>
+
+# Actually mutate GitHub
+task apply ORG=<org> CONFIRM=true   # or: ./admin/update.sh <org> --confirm
 ```
 
 ---
@@ -145,7 +149,7 @@ task apply ORG=<org>         # or: ./admin/update.sh <org> --confirm
 
 | Flag | Default | Purpose |
 | ------ | --------- | --------- |
-| `--confirm` | off | No mutations unless explicitly set (CI sets it only on apply) |
+| `--confirm` | `CONFIRM=false` | No mutations unless `CONFIRM=true`. Local `task apply` is a dry-run by default; the `peribolos-apply.yml` workflow passes `CONFIRM=true` on merge to `main`. |
 | `--maximum-removal-delta` | `0.25` | Refuse runs deleting >25% of memberships (typo guard) |
 | `--min-admins` | `2` | Refuse a config with fewer than 2 admins (lockout guard) |
 | `--require-self` | `false` | If true, the bot must be an admin to apply |
