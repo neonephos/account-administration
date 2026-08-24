@@ -11,3 +11,7 @@ Thumbs.db
 *.pem
 
 node_modules/
+
+# Go build artifacts
+/enterprise-sync
+*.test

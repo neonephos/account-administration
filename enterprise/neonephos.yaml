@@ -1,0 +1,20 @@
+# Enterprise association config for NeoNephos — reconciled by cmd/enterprise-sync.
+#
+# Manages ONLY enterprise owners and members (not organizations). On apply, these
+# lists are authoritative: a login removed here is removed from the enterprise.
+#
+# Reconciled in dry-run on PRs and applied on merge (see the workflow). Auth is an
+# enterprise-installed GitHub App token with the enterprise People-management
+# permission.
+#
+# Seed the current state with:
+#   gh api graphql -f query='...' # (requires read:enterprise) — or dump via the tool
+enterprise: neonephos
+spec:
+  # Enterprise owners (admins) — the break-glass / foundation administrators.
+  # Keep this list at >= --min-owners (default 2).
+  owners:
+    - jakobmoellerdev
+    - mirzakopic
+  # Regular enterprise members (optional).
+  members: []
