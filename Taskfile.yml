@@ -95,7 +95,7 @@ tasks:
         --entrypoint sh {{.PERIBOLOS_IMAGE}}
         -c 'umask 077; printf %s "$GITHUB_TOKEN" > /tmp/token; exec /ko-app/peribolos --github-token-path /tmp/token "$@"' sh
         --config-path "{{.CONFIG_DIR}}/{{.ORG}}/org.yaml"
-        --fix-org --fix-org-members --fix-teams --fix-team-members
+        --fix-org-members --fix-teams --fix-team-members
         --min-admins={{.MIN_ADMINS}}
         --maximum-removal-delta={{.MAX_REMOVAL_DELTA}}
         --require-self={{.REQUIRE_SELF}}
