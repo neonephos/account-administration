@@ -56,5 +56,5 @@ gh secret set PERIBOLOS_APP_PRIVATE_KEY \
   < ~/Downloads/neonephos-peribolos.YYYY-MM-DD.private-key.pem
 ```
 
-The workflows (`peribolos-plan.yml`, `peribolos-apply.yml`) read these two
+The `peribolos` workflow reads these two
 secrets to mint an installation token scoped to the target org.
