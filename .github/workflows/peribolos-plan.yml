@@ -1,10 +1,10 @@
-# Dry-run Peribolos on pull requests and post the plan.
+# Dry-run Peribolos on pull requests.
 #
-# This never mutates GitHub. It shows maintainers/reviewers exactly what the
-# apply step would do once the PR is merged.
+# This never mutates GitHub. The job succeeds only if the dry-run is clean, so a
+# green check is the review signal (the full plan is in the job log).
 #
 # Auth: uses a GitHub App (recommended over a PAT). Configure repo/org secrets:
-#   PERIBOLOS_APP_ID           - the GitHub App's App ID
+#   PERIBOLOS_APP_ID           - the GitHub App's Client ID (e.g. Iv23li...)
 #   PERIBOLOS_APP_PRIVATE_KEY  - the App's private key (PEM)
 # The App must be installed on each managed org with:
 #   Organization > Members: Read and write
@@ -22,7 +22,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   plan:
@@ -51,32 +50,6 @@ jobs:
           owner: ${{ matrix.org }}
 
       - name: Peribolos dry-run
-        id: dryrun
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          set -o pipefail
-          make plan ORG=${{ matrix.org }} 2>&1 | tee /tmp/plan-${{ matrix.org }}.log
-
-      - name: Comment plan on PR
-        if: always()
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        env:
-          ORG: ${{ matrix.org }}
-        with:
-          script: |
-            const fs = require('fs');
-            const org = process.env.ORG;
-            let body;
-            try {
-              const log = fs.readFileSync(`/tmp/plan-${org}.log`, 'utf8').slice(-60000);
-              body = `### Peribolos dry-run for \`${org}\`\n\n<details><summary>plan output</summary>\n\n\`\`\`\n${log}\n\`\`\`\n\n</details>`;
-            } catch (e) {
-              body = `### Peribolos dry-run for \`${org}\`\n\n:warning: could not read plan output.`;
-            }
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body,
-            });
+        run: make plan ORG=${{ matrix.org }}
