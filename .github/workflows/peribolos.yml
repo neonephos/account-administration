@@ -46,9 +46,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Runs on ubuntu-slim (1 vCPU single-CPU runner) — cheaper for these
-  # lightweight jobs; it ships Docker + jq, which is all we need. Note: there is
-  # no ubuntu-slim ARM variant, so x64 only.
+  # Runs on ubuntu-slim (1 vCPU single-CPU runner) — cheaper for this
+  # lightweight discovery job (just find + jq). NOTE: slim runners have the
+  # Docker CLI but no Docker daemon, so the reconcile job below (which runs
+  # peribolos via `docker run`) must stay on a standard runner. There is also
+  # no ubuntu-slim ARM variant.
   #
   # Discover the orgs to reconcile by listing orgs/*/org.yaml, and emit them as
   # a JSON array for the matrix below.
@@ -74,7 +76,9 @@ jobs:
 
   reconcile:
     needs: discover-orgs
-    runs-on: ubuntu-slim
+    # Standard runner: peribolos runs via `docker run`, which needs a Docker
+    # daemon that ubuntu-slim does not provide.
+    runs-on: ubuntu-latest
     # Apply only on push to main / manual dispatch; pull_request is a dry-run.
     # The environment gate applies its required-reviewers only on those apply
     # runs — set it up in repo settings (Environments > peribolos-apply).
