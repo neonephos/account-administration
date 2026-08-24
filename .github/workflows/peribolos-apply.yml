@@ -1,0 +1,66 @@
+# Apply Peribolos configuration on merge to main.
+#
+# This MUTATES GitHub org state. It runs only after a PR is merged (or on manual
+# dispatch). PR review + CODEOWNERS approval is the gate; the plan workflow
+# shows the diff before merge.
+#
+# Auth: GitHub App (see peribolos-plan.yml for the required secrets/permissions).
+name: peribolos-apply
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "orgs/**/org.yaml"
+      - "Makefile"
+      - "admin/**"
+      - ".github/workflows/peribolos-apply.yml"
+  workflow_dispatch:
+    inputs:
+      org:
+        description: "Org to apply (must match a matrix entry)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  # Never let two applies race against the same org state.
+  group: peribolos-apply
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    # Point this at a GitHub Environment with required reviewers for a manual
+    # approval gate before any mutation. Create the "peribolos-apply"
+    # environment in repo settings and add the enterprise admins as reviewers.
+    environment: peribolos-apply
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        org:
+          - neonephos
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate config
+        run: make validate
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          # PERIBOLOS_APP_ID holds the App's Client ID (e.g. Iv23li...), which
+          # GitHub now recommends over the numeric App ID.
+          client-id: ${{ secrets.PERIBOLOS_APP_ID }}
+          private-key: ${{ secrets.PERIBOLOS_APP_PRIVATE_KEY }}
+          owner: ${{ matrix.org }}
+
+      - name: Peribolos apply
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: make apply ORG=${{ matrix.org }}
