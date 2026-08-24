@@ -1,0 +1,22 @@
+# CODEOWNERS — who must approve changes to account administration.
+#
+# The whole repo is guarded by the account administrators by default. Per-org
+# membership files can additionally be owned by that org's designated admins so
+# projects self-serve their own membership PRs (the guardrail/self-service split
+# described in docs/peribolos-setup.md).
+#
+# Requires "Require review from Code Owners" in the main branch protection rule.
+
+# Default: account administrators own everything not otherwise matched.
+*                               @neonephos/account-administrators
+
+# The automation itself (workflows, Makefile, scripts, safety rails) is
+# admin-only — projects can change membership, not the engine.
+/.github/workflows/             @neonephos/account-administrators
+/Makefile                       @neonephos/account-administrators
+/admin/                         @neonephos/account-administrators
+/CODEOWNERS                     @neonephos/account-administrators
+
+# Per-org config. Add one block per onboarded org; delegate to the org's own
+# admin team here if/when you want them to self-approve membership PRs.
+/orgs/neonephos/                @neonephos/account-administrators
