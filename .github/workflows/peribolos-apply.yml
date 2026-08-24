@@ -66,6 +66,4 @@ jobs:
           owner: ${{ matrix.org }}
 
       - name: Peribolos apply
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: task apply ORG=${{ matrix.org }} CONFIRM=true
+        run: task apply ORG=${{ matrix.org }} CONFIRM=true GITHUB_TOKEN=${{ steps.app-token.outputs.token }}
