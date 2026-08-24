@@ -59,7 +59,7 @@ tasks:
     requires:
       vars: [ORG]
     env:
-      GITHUB_TOKEN: '{{.GITHUB_TOKEN}}'
+      GITHUB_TOKEN: "{{.GITHUB_TOKEN}}"
     preconditions:
       - sh: 'test -n "$GITHUB_TOKEN"'
         msg: "ERROR: GITHUB_TOKEN is not set (export it or pass GITHUB_TOKEN=...)"
@@ -78,7 +78,7 @@ tasks:
     requires:
       vars: [ORG, GITHUB_TOKEN]
     env:
-      GITHUB_TOKEN: '{{.GITHUB_TOKEN}}'
+      GITHUB_TOKEN: "{{.GITHUB_TOKEN}}"
     preconditions:
       - sh: 'test -f "{{.CONFIG_DIR}}/{{.ORG}}/org.yaml"'
         msg: "ERROR: config not found: {{.CONFIG_DIR}}/{{.ORG}}/org.yaml"
