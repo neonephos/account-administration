@@ -12,8 +12,10 @@
 # Auth: set GITHUB_TOKEN (a token or GitHub App installation token with org
 # admin scope). In CI this is provided by the GitHub App (see workflows).
 
-# Pin the Prow image tag; bump deliberately. See https://gcr.io/k8s-prow/peribolos
-PERIBOLOS_IMAGE ?= gcr.io/k8s-prow/peribolos:v20250710-e2a6a9a3e
+# Pin the Prow image tag; bump deliberately.
+# Registry: us-docker.pkg.dev/k8s-infra-prow/images (gcr.io/k8s-prow was retired).
+# Tags: https://us-docker.pkg.dev/k8s-infra-prow/images/peribolos
+PERIBOLOS_IMAGE ?= us-docker.pkg.dev/k8s-infra-prow/images/peribolos:v20260821-a61940897
 CONFIG_DIR      ?= orgs
 ORG             ?=
 
@@ -25,13 +27,17 @@ REQUIRE_SELF        ?= false
 CONFIG_PATH := $(CONFIG_DIR)/$(ORG)/org.yaml
 
 # Run peribolos via Docker so no local Go toolchain is needed.
-# Mounts the repo read-only and passes the token via env.
+# Mounts the repo read-only. peribolos reads the token from a FILE
+# (--github-token-path), not an env var, so we override the entrypoint to write
+# $GITHUB_TOKEN into a temp file inside the container, then exec peribolos.
 define RUN_PERIBOLOS
 	docker run --rm \
 		-v "$(CURDIR):/workspace:ro" \
 		-w /workspace \
 		-e GITHUB_TOKEN \
-		$(PERIBOLOS_IMAGE)
+		--entrypoint sh \
+		$(PERIBOLOS_IMAGE) \
+		-c 'umask 077; printf %s "$$GITHUB_TOKEN" > /tmp/token; exec /ko-app/peribolos --github-token-path /tmp/token "$$@"' sh
 endef
 
 .PHONY: help

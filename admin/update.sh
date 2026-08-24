@@ -48,7 +48,7 @@ else
   echo ">>> APPLYING changes to org '${ORG}'." >&2
 fi
 
-PERIBOLOS_IMAGE="${PERIBOLOS_IMAGE:-gcr.io/k8s-prow/peribolos:v20250710-e2a6a9a3e}"
+PERIBOLOS_IMAGE="${PERIBOLOS_IMAGE:-us-docker.pkg.dev/k8s-infra-prow/images/peribolos:v20260821-a61940897}"
 MIN_ADMINS="${MIN_ADMINS:-2}"
 MAX_REMOVAL_DELTA="${MAX_REMOVAL_DELTA:-0.25}"
 REQUIRE_SELF="${REQUIRE_SELF:-false}"
