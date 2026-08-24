@@ -1,0 +1,8 @@
+apiVersion: kro.run/v1alpha1
+kind: SecretDecodeExample
+metadata:
+  name: testdecode
+  namespace: default
+spec:
+  secretName: test-secret
+  secretNamespace: default

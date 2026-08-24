@@ -1,0 +1,101 @@
+# Peribolos automation for NeoNephos account administration.
+#
+# Peribolos manages GitHub org settings, teams, and memberships from the YAML
+# files under orgs/*/org.yaml. See docs/peribolos-setup.md.
+#
+# Usage (ORG is a Task variable — pass it after the task name):
+#   task validate                 # lint + schema-check all org configs (no network)
+#   task dump ORG=neonephos > orgs/neonephos/org.yaml   # seed from live org
+#   task plan  ORG=neonephos      # dry-run: show what WOULD change (no mutations)
+#   task apply ORG=neonephos      # APPLY changes to GitHub (requires --confirm)
+#
+# Auth: set GITHUB_TOKEN (a token or GitHub App installation token with org
+# admin scope). In CI this is provided by the GitHub App (see workflows).
+#
+# Requires: https://taskfile.dev  (go-task)
+version: "3"
+
+vars:
+  # Pin the Prow image tag; bump deliberately.
+  # Registry: us-docker.pkg.dev/k8s-infra-prow/images (gcr.io/k8s-prow was retired).
+  # Tags: https://us-docker.pkg.dev/k8s-infra-prow/images/peribolos
+  PERIBOLOS_IMAGE: '{{.PERIBOLOS_IMAGE | default "us-docker.pkg.dev/k8s-infra-prow/images/peribolos:v20260821-a61940897"}}'
+  CONFIG_DIR: '{{.CONFIG_DIR | default "orgs"}}'
+  # Safety rails (mirror the kubernetes/org defaults).
+  MIN_ADMINS: '{{.MIN_ADMINS | default "2"}}'
+  MAX_REMOVAL_DELTA: '{{.MAX_REMOVAL_DELTA | default "0.25"}}'
+  REQUIRE_SELF: '{{.REQUIRE_SELF | default "false"}}'
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+    silent: true
+
+  validate:
+    desc: Validate all org configs are well-formed YAML (no network calls)
+    cmds:
+      - |
+        for f in {{.CONFIG_DIR}}/*/org.yaml; do
+          echo "checking $f"
+          python3 -c "import sys,yaml; yaml.safe_load(open('$f')); print('  ok')" || exit 1
+        done
+
+  dump:
+    desc: Dump the live org config to stdout (seed a new org.yaml) — needs ORG=<org>
+    requires:
+      vars: [ORG]
+    preconditions:
+      - sh: 'test -n "$GITHUB_TOKEN"'
+        msg: "ERROR: GITHUB_TOKEN is not set"
+    cmds:
+      - >-
+        docker run --rm
+        -v "{{.ROOT_DIR}}:/workspace:ro" -w /workspace -e GITHUB_TOKEN
+        --entrypoint sh {{.PERIBOLOS_IMAGE}}
+        -c 'umask 077; printf %s "$GITHUB_TOKEN" > /tmp/token; exec /ko-app/peribolos --github-token-path /tmp/token "$@"' sh
+        --dump "{{.ORG}}"
+
+  plan:
+    desc: "Dry-run: print the changes peribolos WOULD make (no mutations) — needs ORG=<org>"
+    requires:
+      vars: [ORG]
+    preconditions:
+      - sh: 'test -f "{{.CONFIG_DIR}}/{{.ORG}}/org.yaml"'
+        msg: "ERROR: config not found: {{.CONFIG_DIR}}/{{.ORG}}/org.yaml"
+      - sh: 'test -n "$GITHUB_TOKEN"'
+        msg: "ERROR: GITHUB_TOKEN is not set"
+    cmds:
+      - >-
+        docker run --rm
+        -v "{{.ROOT_DIR}}:/workspace:ro" -w /workspace -e GITHUB_TOKEN
+        --entrypoint sh {{.PERIBOLOS_IMAGE}}
+        -c 'umask 077; printf %s "$GITHUB_TOKEN" > /tmp/token; exec /ko-app/peribolos --github-token-path /tmp/token "$@"' sh
+        --config-path "{{.CONFIG_DIR}}/{{.ORG}}/org.yaml"
+        --fix-org --fix-org-members --fix-teams --fix-team-members
+        --min-admins={{.MIN_ADMINS}}
+        --maximum-removal-delta={{.MAX_REMOVAL_DELTA}}
+        --require-self={{.REQUIRE_SELF}}
+
+  apply:
+    desc: "APPLY the config to GitHub (mutates! adds --confirm) — needs ORG=<org>"
+    requires:
+      vars: [ORG]
+    preconditions:
+      - sh: 'test -f "{{.CONFIG_DIR}}/{{.ORG}}/org.yaml"'
+        msg: "ERROR: config not found: {{.CONFIG_DIR}}/{{.ORG}}/org.yaml"
+      - sh: 'test -n "$GITHUB_TOKEN"'
+        msg: "ERROR: GITHUB_TOKEN is not set"
+    cmds:
+      - >-
+        docker run --rm
+        -v "{{.ROOT_DIR}}:/workspace:ro" -w /workspace -e GITHUB_TOKEN
+        --entrypoint sh {{.PERIBOLOS_IMAGE}}
+        -c 'umask 077; printf %s "$GITHUB_TOKEN" > /tmp/token; exec /ko-app/peribolos --github-token-path /tmp/token "$@"' sh
+        --config-path "{{.CONFIG_DIR}}/{{.ORG}}/org.yaml"
+        --fix-org --fix-org-members --fix-teams --fix-team-members
+        --min-admins={{.MIN_ADMINS}}
+        --maximum-removal-delta={{.MAX_REMOVAL_DELTA}}
+        --require-self={{.REQUIRE_SELF}}
+        --confirm

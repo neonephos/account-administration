@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-secret
+  namespace: default
+data:
+  mykey: YXBpVmVyc2lvbjogdjEKa2luZDogQ29uZmlnCg== # "apiVersion: v1\nkind: Config\n" in base64
+---
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: secret-decode-example
+  annotations:
+    kro.run/allow-breaking-changes: "true"
+spec:
+  schema:
+    apiVersion: v1alpha1
+    kind: SecretDecodeExample
+    spec:
+      secretName: string
+      secretNamespace: string
+    status:
+      decodedValue1: "${ base64.decode(mySecret.data.mykey) }"
+      # decodedValue2: "${ base64.decode(string(mySecret.data.mykey)) }"
+      # decodedValue3: "${ string(base64.decode(string(mySecret.data.mykey))) }"
+
+  resources:
+    # External reference to existing Secret
+    - id: mySecret
+      externalRef:
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: ${schema.spec.secretName}
+          namespace: ${schema.spec.secretNamespace}
+
+    # Attempt to use decoded Secret data
+    - id: configMap
+      template:
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: decoded-output
+          namespace: ${schema.spec.secretNamespace}
+        data:
+          # Try any of these - all fail:
+
+          # Attempt 1: Direct decode
+          decoded-value: "${ base64.decode(mySecret.data.mykey) }"
+
+          # Attempt 2: String conversion first
+          # decoded-value: "${ base64.decode(string(mySecret.data.mykey)) }"
+
+          # Attempt 3: Double string conversion (from docs)
+          # decoded-value: "${ string(base64.decode(string(mySecret.data.mykey))) }"

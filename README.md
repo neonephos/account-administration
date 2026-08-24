@@ -18,10 +18,10 @@ Tooling and process for administering organizations in the
 
 ```bash
 # Dry-run what would change for an org (needs GITHUB_TOKEN with org admin scope)
-make plan ORG=neonephos
+task plan ORG=neonephos
 
 # Validate all org configs (no network)
-make validate
+task validate
 ```
 
 Managing an org's members or teams is a pull request against
@@ -32,7 +32,7 @@ schema are documented in [docs/peribolos-setup.md](docs/peribolos-setup.md).
 
 ```
 orgs/<org>/org.yaml         # source of truth: members, admins, teams, permissions
-Makefile                    # validate / dump / plan / apply
+Taskfile.yml                # validate / dump / plan / apply (needs go-task)
 admin/update.sh             # local wrapper (dry-run by default)
 .github/workflows/          # peribolos-plan (PR dry-run) + peribolos-apply (on merge)
 CODEOWNERS                  # approval gates

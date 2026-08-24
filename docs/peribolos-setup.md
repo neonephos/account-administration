@@ -38,14 +38,19 @@ orgs/<org>/org.yaml   ──PR──▶  review + CODEOWNERS approval  ──mer
 orgs/
   neonephos/
     org.yaml            # desired state for one org
-Makefile                # validate / dump / plan / apply targets
+Taskfile.yml             # validate / dump / plan / apply tasks
 admin/
   update.sh             # local wrapper (dry-run by default)
 .github/workflows/
-  peribolos-plan.yml    # dry-run on PRs, comments the plan
+  peribolos-plan.yml    # dry-run on PRs (pass/fail is the signal)
   peribolos-apply.yml   # apply on merge to main
 CODEOWNERS              # who approves what
 ```
+
+**Local prerequisites:** [go-task](https://taskfile.dev) (`task`), Docker, and a
+`GITHUB_TOKEN` with org admin scope. CI installs Task automatically. The
+`peribolos-plan.yml` comment about "comments the plan" is historical — the
+dry-run now signals via the job's pass/fail status, not a PR comment.
 
 ---
 
@@ -87,15 +92,15 @@ with real teams/users.
 
    ```bash
    export GITHUB_TOKEN=...   # token/App token with org admin scope
-   make dump ORG=<org> > orgs/<org>/org.yaml
+   task dump ORG=<org> > orgs/<org>/org.yaml
    ```
 
 2. **Trim** the dumped file — delete anything you don't want Peribolos to manage
    (e.g. `billing_email`), and review the member/admin/team lists.
 3. Add the org to the `matrix.org` list in **both** workflow files and add a
    `CODEOWNERS` line for `orgs/<org>/`.
-4. Open a PR. Confirm the `peribolos-plan` comment shows **no destructive
-   changes** (a freshly-dumped config should be a near no-op).
+4. Open a PR. Confirm the `peribolos-plan` check passes and its job log shows
+   **no destructive changes** (a freshly-dumped config should be a near no-op).
 5. Merge. `peribolos-apply` reconciles.
 
 ---
@@ -119,24 +124,24 @@ orgs:
           my-repo: write
 ```
 
-The PR comment shows the plan; a CODEOWNER approves; merge applies it.
+The plan check must pass; a CODEOWNER approves; merge applies it.
 
 ### Run a dry-run locally
 
 ```bash
 export GITHUB_TOKEN=...
-make plan ORG=<org>          # or: ./admin/update.sh <org>
+task plan ORG=<org>          # or: ./admin/update.sh <org>
 ```
 
 ### Apply locally (rarely needed — CI does this)
 
 ```bash
-make apply ORG=<org>         # or: ./admin/update.sh <org> --confirm
+task apply ORG=<org>         # or: ./admin/update.sh <org> --confirm
 ```
 
 ---
 
-## Safety rails (configured in the Makefile)
+## Safety rails (configured in the Taskfile)
 
 | Flag | Default | Purpose |
 | ------ | --------- | --------- |
@@ -145,7 +150,7 @@ make apply ORG=<org>         # or: ./admin/update.sh <org> --confirm
 | `--min-admins` | `2` | Refuse a config with fewer than 2 admins (lockout guard) |
 | `--require-self` | `false` | If true, the bot must be an admin to apply |
 
-Tune these via `make VAR=value` or environment variables (see the `Makefile`).
+Tune these via `task VAR=value ...` or environment variables (see `Taskfile.yml`).
 
 ---
 
@@ -186,5 +191,5 @@ Full schema: <https://docs.prow.k8s.io/docs/components/cli-tools/peribolos/>
   centrally-enforced repo policy, pair it with
   [`github/safe-settings`](https://github.com/github/safe-settings) later.
 - Usernames are GitHub login handles (lowercase, no `@`).
-- The `peribolos` container image tag is pinned in the `Makefile`
+- The `peribolos` container image tag is pinned in the `Taskfile`
   (`PERIBOLOS_IMAGE`); bump it deliberately.
