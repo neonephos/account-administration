@@ -39,6 +39,7 @@ orgs/
   neonephos/
     org.yaml            # desired state for one org
 Taskfile.yml             # validate / dump / plan / apply tasks
+.taskrc.yml              # enables the env-precedence experiment
 admin/
   update.sh             # local wrapper (dry-run by default)
 .github/workflows/
@@ -48,9 +49,12 @@ CODEOWNERS              # who approves what
 ```
 
 **Local prerequisites:** [go-task](https://taskfile.dev) (`task`), Docker, and a
-`GITHUB_TOKEN` with org admin scope. CI installs Task automatically. The
-`peribolos-plan.yml` comment about "comments the plan" is historical — the
-dry-run now signals via the job's pass/fail status, not a PR comment.
+`GITHUB_TOKEN` with org admin scope. `GITHUB_TOKEN` defaults to your shell
+environment (`export GITHUB_TOKEN=...`) but can also be passed inline
+(`task plan ORG=<org> GITHUB_TOKEN=...`); `.taskrc.yml` enables Task's
+[env-precedence experiment](https://taskfile.dev/docs/experiments/env-precedence)
+so the Taskfile env is authoritative with the OS value as its default. CI
+installs Task automatically.
 
 ---
 

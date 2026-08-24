@@ -1,0 +1,7 @@
+# Task runtime config. https://taskfile.dev
+#
+# Enable the env-precedence experiment so the Taskfile's `env:` (GITHUB_TOKEN)
+# is authoritative and reads the OS value as its default.
+# https://taskfile.dev/docs/experiments/env-precedence
+experiments:
+  ENV_PRECEDENCE: 1

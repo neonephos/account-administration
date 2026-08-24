@@ -13,11 +13,18 @@
 # difference is whether --confirm is passed (CONFIRM=true). CI passes CONFIRM=true
 # in peribolos-apply.yml.
 #
-# Auth: set GITHUB_TOKEN (a token or GitHub App installation token with org
-# admin scope). In CI this is provided by the GitHub App (see workflows).
+# Auth: GITHUB_TOKEN defaults to your shell's $GITHUB_TOKEN (a token or GitHub
+# App installation token with org admin scope). Override with
+# `task ... GITHUB_TOKEN=...`. Env precedence is enabled via .taskrc.yml, so the
+# Taskfile env is authoritative; the OS value is read as the default.
 #
 # Requires: https://taskfile.dev  (go-task)
 version: "3"
+
+# GITHUB_TOKEN is injected into every task's environment, defaulting to the OS
+# value. See https://taskfile.dev/docs/experiments/env-precedence
+env:
+  GITHUB_TOKEN: '{{.GITHUB_TOKEN | default (env "GITHUB_TOKEN")}}'
 
 vars:
   # Pin the Prow image tag; bump deliberately.
@@ -55,7 +62,7 @@ tasks:
       vars: [ORG]
     preconditions:
       - sh: 'test -n "$GITHUB_TOKEN"'
-        msg: "ERROR: GITHUB_TOKEN is not set"
+        msg: "ERROR: GITHUB_TOKEN is not set (export it or pass GITHUB_TOKEN=...)"
     cmds:
       - >-
         docker run --rm
@@ -75,7 +82,7 @@ tasks:
       - sh: 'test -f "{{.CONFIG_DIR}}/{{.ORG}}/org.yaml"'
         msg: "ERROR: config not found: {{.CONFIG_DIR}}/{{.ORG}}/org.yaml"
       - sh: 'test -n "$GITHUB_TOKEN"'
-        msg: "ERROR: GITHUB_TOKEN is not set"
+        msg: "ERROR: GITHUB_TOKEN is not set (export it or pass GITHUB_TOKEN=...)"
     cmds:
       - >-
         docker run --rm
@@ -99,4 +106,4 @@ tasks:
     desc: "APPLY the config to GitHub — dry-run unless CONFIRM=true — needs ORG=<org>"
     cmds:
       - task: reconcile
-        vars: { CONFIRM: '{{.CONFIRM}}' }
+        vars: { CONFIRM: "{{.CONFIRM}}" }
