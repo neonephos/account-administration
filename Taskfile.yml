@@ -4,14 +4,13 @@
 # files under orgs/*/org.yaml. See docs/peribolos-setup.md.
 #
 # Usage (ORG is a Task variable — pass it after the task name):
-#   task validate                 # lint + schema-check all org configs (no network)
+#   task validate                   # lint + schema-check all org configs (no network)
 #   task dump ORG=neonephos > orgs/neonephos/org.yaml   # seed from live org
-#   task plan  ORG=neonephos      # dry-run: show what WOULD change (no mutations)
-#   task apply ORG=neonephos      # dry-run by default; add CONFIRM=true to mutate
+#   task reconcile ORG=neonephos    # dry-run (no mutations)
+#   task reconcile ORG=neonephos CONFIRM=true   # APPLY changes to GitHub
 #
-# `plan` and `apply` are thin aliases over the single `reconcile` task; the only
-# difference is whether --confirm is passed (CONFIRM=true). CI passes CONFIRM=true
-# in peribolos-apply.yml.
+# `reconcile` is the single entry point: dry-run by default, mutating only when
+# CONFIRM=true. CI passes CONFIRM=true on push to main (PRs stay dry-run).
 #
 # Auth: GITHUB_TOKEN is a global variable that defaults to your shell's
 # $GITHUB_TOKEN (a token or GitHub App installation token with org admin scope).
@@ -36,7 +35,7 @@ vars:
   MAX_REMOVAL_DELTA: '{{.MAX_REMOVAL_DELTA | default "0.25"}}'
   REQUIRE_SELF: '{{.REQUIRE_SELF | default "false"}}'
   # Whether peribolos actually MUTATES GitHub. Defaults to false so a local
-  # `task apply` is a safe dry-run; CI (peribolos-apply.yml) overrides CONFIRM=true.
+  # `task reconcile` is a safe dry-run; CI overrides CONFIRM=true on push to main.
   CONFIRM: '{{.CONFIRM | default "false"}}'
 
 tasks:
@@ -72,9 +71,8 @@ tasks:
         -c 'umask 077; printf %s "$GITHUB_TOKEN" > /tmp/token; exec /ko-app/peribolos --github-token-path /tmp/token "$@"' sh
         --dump "{{.ORG}}"
 
-  # Core reconcile: one code path for both dry-run and apply. Peribolos only
-  # mutates GitHub when --confirm is present, which we append only when
-  # CONFIRM=true. `plan` and `apply` below are thin aliases over this.
+  # Reconcile: the single entry point. Dry-run by default; peribolos only mutates
+  # GitHub when --confirm is present, which we append only when CONFIRM=true.
   reconcile:
     desc: "Reconcile an org (dry-run unless CONFIRM=true) — needs ORG=<org>"
     requires:
@@ -98,15 +96,3 @@ tasks:
         --maximum-removal-delta={{.MAX_REMOVAL_DELTA}}
         --require-self={{.REQUIRE_SELF}}
         {{if eq .CONFIRM "true"}}--confirm{{end}}
-
-  plan:
-    desc: "Dry-run: print the changes peribolos WOULD make (no mutations) — needs ORG=<org>"
-    cmds:
-      - task: reconcile
-        vars: { CONFIRM: "false" }
-
-  apply:
-    desc: "APPLY the config to GitHub — dry-run unless CONFIRM=true — needs ORG=<org>"
-    cmds:
-      - task: reconcile
-        vars: { CONFIRM: "{{.CONFIRM}}" }
