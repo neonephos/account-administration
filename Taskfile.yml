@@ -7,7 +7,11 @@
 #   task validate                 # lint + schema-check all org configs (no network)
 #   task dump ORG=neonephos > orgs/neonephos/org.yaml   # seed from live org
 #   task plan  ORG=neonephos      # dry-run: show what WOULD change (no mutations)
-#   task apply ORG=neonephos      # APPLY changes to GitHub (requires --confirm)
+#   task apply ORG=neonephos      # dry-run by default; add CONFIRM=true to mutate
+#
+# `plan` and `apply` are thin aliases over the single `reconcile` task; the only
+# difference is whether --confirm is passed (CONFIRM=true). CI passes CONFIRM=true
+# in peribolos-apply.yml.
 #
 # Auth: set GITHUB_TOKEN (a token or GitHub App installation token with org
 # admin scope). In CI this is provided by the GitHub App (see workflows).
@@ -60,8 +64,11 @@ tasks:
         -c 'umask 077; printf %s "$GITHUB_TOKEN" > /tmp/token; exec /ko-app/peribolos --github-token-path /tmp/token "$@"' sh
         --dump "{{.ORG}}"
 
-  plan:
-    desc: "Dry-run: print the changes peribolos WOULD make (no mutations) — needs ORG=<org>"
+  # Core reconcile: one code path for both dry-run and apply. Peribolos only
+  # mutates GitHub when --confirm is present, which we append only when
+  # CONFIRM=true. `plan` and `apply` below are thin aliases over this.
+  reconcile:
+    desc: "Reconcile an org (dry-run unless CONFIRM=true) — needs ORG=<org>"
     requires:
       vars: [ORG]
     preconditions:
@@ -80,25 +87,16 @@ tasks:
         --min-admins={{.MIN_ADMINS}}
         --maximum-removal-delta={{.MAX_REMOVAL_DELTA}}
         --require-self={{.REQUIRE_SELF}}
+        {{if eq .CONFIRM "true"}}--confirm{{end}}
+
+  plan:
+    desc: "Dry-run: print the changes peribolos WOULD make (no mutations) — needs ORG=<org>"
+    cmds:
+      - task: reconcile
+        vars: { CONFIRM: "false" }
 
   apply:
     desc: "APPLY the config to GitHub — dry-run unless CONFIRM=true — needs ORG=<org>"
-    requires:
-      vars: [ORG]
-    preconditions:
-      - sh: 'test -f "{{.CONFIG_DIR}}/{{.ORG}}/org.yaml"'
-        msg: "ERROR: config not found: {{.CONFIG_DIR}}/{{.ORG}}/org.yaml"
-      - sh: 'test -n "$GITHUB_TOKEN"'
-        msg: "ERROR: GITHUB_TOKEN is not set"
     cmds:
-      - >-
-        docker run --rm
-        -v "{{.ROOT_DIR}}:/workspace:ro" -w /workspace -e GITHUB_TOKEN
-        --entrypoint sh {{.PERIBOLOS_IMAGE}}
-        -c 'umask 077; printf %s "$GITHUB_TOKEN" > /tmp/token; exec /ko-app/peribolos --github-token-path /tmp/token "$@"' sh
-        --config-path "{{.CONFIG_DIR}}/{{.ORG}}/org.yaml"
-        --fix-org --fix-org-members --fix-teams --fix-team-members
-        --min-admins={{.MIN_ADMINS}}
-        --maximum-removal-delta={{.MAX_REMOVAL_DELTA}}
-        --require-self={{.REQUIRE_SELF}}
-        --confirm={{.CONFIRM}}
+      - task: reconcile
+        vars: { CONFIRM: '{{.CONFIRM}}' }
