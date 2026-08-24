@@ -49,12 +49,12 @@ CODEOWNERS              # who approves what
 ```
 
 **Local prerequisites:** [go-task](https://taskfile.dev) (`task`), Docker, and a
-`GITHUB_TOKEN` with org admin scope. `GITHUB_TOKEN` defaults to your shell
-environment (`export GITHUB_TOKEN=...`) but can also be passed inline
-(`task plan ORG=<org> GITHUB_TOKEN=...`); `.taskrc.yml` enables Task's
-[env-precedence experiment](https://taskfile.dev/docs/experiments/env-precedence)
-so the Taskfile env is authoritative with the OS value as its default. CI
-installs Task automatically.
+`GITHUB_TOKEN` with org admin scope. `GITHUB_TOKEN` is a global Task variable
+that defaults to your shell environment (`export GITHUB_TOKEN=...`) and can be
+overridden inline (`task plan ORG=<org> GITHUB_TOKEN=...`); `.taskrc.yml` enables
+Task's [env-precedence experiment](https://taskfile.dev/docs/experiments/env-precedence)
+so an overridden value wins over a stale OS value. CI installs Task
+automatically.
 
 ---
 
