@@ -51,7 +51,11 @@ tasks:
       - |
         for f in {{.CONFIG_DIR}}/*/org.yaml; do
           echo "checking $f"
-          python3 -c "import sys,yaml; yaml.safe_load(open('$f')); print('  ok')" || exit 1
+          if command -v yq >/dev/null 2>&1; then
+            yq -e '.' "$f" >/dev/null && echo "  ok" || exit 1
+          else
+            python3 -c "import sys,yaml; yaml.safe_load(open('$f')); print('  ok')" || exit 1
+          fi
         done
 
   dump:
