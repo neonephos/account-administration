@@ -13,20 +13,19 @@
 # difference is whether --confirm is passed (CONFIRM=true). CI passes CONFIRM=true
 # in peribolos-apply.yml.
 #
-# Auth: GITHUB_TOKEN defaults to your shell's $GITHUB_TOKEN (a token or GitHub
-# App installation token with org admin scope). Override with
-# `task ... GITHUB_TOKEN=...`. Env precedence is enabled via .taskrc.yml, so the
-# Taskfile env is authoritative; the OS value is read as the default.
+# Auth: GITHUB_TOKEN is a global variable that defaults to your shell's
+# $GITHUB_TOKEN (a token or GitHub App installation token with org admin scope).
+# Override with `task ... GITHUB_TOKEN=...`. Tasks that need it inject it into
+# their environment; .taskrc.yml enables env-precedence so the injected value
+# wins over any stale OS value.
 #
 # Requires: https://taskfile.dev  (go-task)
 version: "3"
 
-# GITHUB_TOKEN is injected into every task's environment, defaulting to the OS
-# value. See https://taskfile.dev/docs/experiments/env-precedence
-env:
-  GITHUB_TOKEN: '{{.GITHUB_TOKEN | default (env "GITHUB_TOKEN")}}'
-
 vars:
+  # GITHUB_TOKEN defaults to the shell environment; override with GITHUB_TOKEN=...
+  # See https://taskfile.dev/docs/experiments/env-precedence
+  GITHUB_TOKEN: '{{.GITHUB_TOKEN | default (env "GITHUB_TOKEN")}}'
   # Pin the Prow image tag; bump deliberately.
   # Registry: us-docker.pkg.dev/k8s-infra-prow/images (gcr.io/k8s-prow was retired).
   # Tags: https://us-docker.pkg.dev/k8s-infra-prow/images/peribolos
@@ -60,6 +59,8 @@ tasks:
     desc: Dump the live org config to stdout (seed a new org.yaml) — needs ORG=<org>
     requires:
       vars: [ORG]
+    env:
+      GITHUB_TOKEN: '{{.GITHUB_TOKEN}}'
     preconditions:
       - sh: 'test -n "$GITHUB_TOKEN"'
         msg: "ERROR: GITHUB_TOKEN is not set (export it or pass GITHUB_TOKEN=...)"
@@ -77,7 +78,9 @@ tasks:
   reconcile:
     desc: "Reconcile an org (dry-run unless CONFIRM=true) — needs ORG=<org>"
     requires:
-      vars: [ORG]
+      vars: [ORG, GITHUB_TOKEN]
+    env:
+      GITHUB_TOKEN: '{{.GITHUB_TOKEN}}'
     preconditions:
       - sh: 'test -f "{{.CONFIG_DIR}}/{{.ORG}}/org.yaml"'
         msg: "ERROR: config not found: {{.CONFIG_DIR}}/{{.ORG}}/org.yaml"
