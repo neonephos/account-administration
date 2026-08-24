@@ -55,6 +55,4 @@ jobs:
           owner: ${{ matrix.org }}
 
       - name: Peribolos dry-run
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: task plan ORG=${{ matrix.org }}
+        run: task plan ORG=${{ matrix.org }} GITHUB_TOKEN=${{ steps.app-token.outputs.token }}
