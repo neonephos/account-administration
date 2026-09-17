@@ -1,10 +1,23 @@
 # Peribolos reconciliation for NeoNephos orgs.
 #
 # One workflow, both modes:
-#   - On pull_request  -> DRY-RUN (CONFIRM=false). Never mutates GitHub; a green
-#     check is the review signal (the full plan is in the job log).
+#   - On pull_request_target -> DRY-RUN (CONFIRM=false). Never mutates GitHub; a
+#     green check is the review signal (the full plan is in the job log).
 #   - On push to main  -> APPLY (CONFIRM=true). Mutates GitHub org state.
 #   - workflow_dispatch -> APPLY (manual).
+#
+# Why pull_request_target (not pull_request): org.yaml PRs come from community
+# forks, and fork-triggered `pull_request` runs get NO repo secrets — so the
+# GitHub App token step fails and the dry-run can't talk to GitHub at all.
+# `pull_request_target` runs in the BASE repo context, where secrets ARE
+# available for fork PRs.
+#
+# SECURITY: pull_request_target exposes secrets, so we MUST NOT execute any
+# fork-controlled code. The reconcile job therefore:
+#   1. Checks out the trusted BASE ref (its Taskfile, workflow, admin scripts).
+#   2. Overlays ONLY the PR's orgs/**/org.yaml *data* files (pure YAML that
+#      peribolos parses — never executed) via `git checkout <pr-sha> -- orgs`.
+# It never checks out or runs the fork's Taskfile.yml / admin/** / workflow.
 #
 # The org matrix is discovered dynamically from orgs/*/org.yaml, so onboarding a
 # new org is just adding its org.yaml — no workflow edit.
@@ -18,7 +31,7 @@
 name: peribolos
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
     paths:
       - "orgs/**/org.yaml"
@@ -59,10 +72,27 @@ jobs:
     outputs:
       orgs: ${{ steps.list.outputs.orgs }}
     steps:
-      - name: Checkout
+      - name: Checkout base
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+
+      # SECURITY (pull_request_target): overlay ONLY the fork PR's org.yaml data
+      # so a PR that adds a brand-new org dir is still discovered & dry-run.
+      # Pure YAML data — never fork code. No-op on push/dispatch.
+      - name: Overlay PR org configs
+        if: github.event_name == 'pull_request_target'
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --no-tags --depth=1 origin "refs/pull/${PR_NUMBER}/head"
+          got=$(git rev-parse FETCH_HEAD)
+          if [ "$got" != "$PR_SHA" ]; then
+            echo "::error::PR head moved during run (expected $PR_SHA, got $got); refusing to dry-run stale/mismatched data"
+            exit 1
+          fi
+          git checkout "$PR_SHA" -- orgs
 
       - name: List org configs
         id: list
@@ -79,21 +109,39 @@ jobs:
     # Standard runner: peribolos runs via `docker run`, which needs a Docker
     # daemon that ubuntu-slim does not provide.
     runs-on: ubuntu-latest
-    # Apply only on push to main / manual dispatch; pull_request is a dry-run.
-    # The environment gate applies its required-reviewers only on those apply
-    # runs — set it up in repo settings (Environments > peribolos-apply).
-    environment: ${{ github.event_name != 'pull_request' && 'peribolos-apply' || '' }}
+    # Apply only on push to main / manual dispatch; pull_request_target is a
+    # dry-run. The environment gate applies its required-reviewers only on those
+    # apply runs — set it up in repo settings (Environments > peribolos-apply).
+    environment: ${{ github.event_name != 'pull_request_target' && 'peribolos-apply' || '' }}
     strategy:
       fail-fast: false
       # Applies run one org at a time; PR dry-runs can fan out freely.
-      max-parallel: ${{ github.event_name != 'pull_request' && 1 || 256 }}
+      max-parallel: ${{ github.event_name != 'pull_request_target' && 1 || 256 }}
       matrix:
         org: ${{ fromJSON(needs.discover-orgs.outputs.orgs) }}
     steps:
-      - name: Checkout
+      - name: Checkout base
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+
+      # SECURITY (pull_request_target): overlay ONLY the fork PR's org.yaml data
+      # onto the trusted base checkout, so peribolos dry-runs the PROPOSED config
+      # without ever checking out or executing fork code (Taskfile/admin/**).
+      # Pure YAML data. No-op on push/dispatch.
+      - name: Overlay PR org configs
+        if: github.event_name == 'pull_request_target'
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --no-tags --depth=1 origin "refs/pull/${PR_NUMBER}/head"
+          got=$(git rev-parse FETCH_HEAD)
+          if [ "$got" != "$PR_SHA" ]; then
+            echo "::error::PR head moved during run (expected $PR_SHA, got $got); refusing to dry-run stale/mismatched data"
+            exit 1
+          fi
+          git checkout "$PR_SHA" -- orgs
 
       - name: Install Task
         uses: arduino/setup-task@c0bc642852239c2689f73f4ea6459c29405f3c52 # v3.0.0
@@ -113,11 +161,11 @@ jobs:
           private-key: ${{ secrets.PERIBOLOS_APP_PRIVATE_KEY }}
           owner: ${{ matrix.org }}
 
-      # CONFIRM=true only when NOT a pull_request (i.e. push to main / dispatch).
+      # CONFIRM=true only when NOT a dry-run (i.e. push to main / dispatch).
       # The token is passed via env (not interpolated into the run: string) and
       # the Taskfile picks up GITHUB_TOKEN from the environment by default.
       - name: Peribolos reconcile
         env:
-          CONFIRM: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
+          CONFIRM: ${{ github.event_name != 'pull_request_target' && 'true' || 'false' }}
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: task reconcile ORG=${{ matrix.org }} CONFIRM="$CONFIRM"
