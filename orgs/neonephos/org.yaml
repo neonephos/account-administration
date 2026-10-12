@@ -20,7 +20,6 @@ orgs:
     - jakobmoellerdev
     - jmertic
     - LF-Europe
-    - mirzakopic
     - renuchauhan221
     - Shegox
     - thelinuxfoundation
@@ -171,7 +170,6 @@ orgs:
       account-administrators:
         description: NeoNephos Github Account Administrators
         maintainers:
-        - mirzakopic
         - jakobmoellerdev
         privacy: closed
         repos:
