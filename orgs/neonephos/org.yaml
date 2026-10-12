@@ -170,7 +170,6 @@ orgs:
       account-administrators:
         description: NeoNephos Github Account Administrators
         maintainers:
-        - mirzakopic
         - jakobmoellerdev
         privacy: closed
         repos:
