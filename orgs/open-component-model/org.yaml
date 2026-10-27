@@ -3,7 +3,6 @@
 orgs:
   open-component-model:
     admins:
-    - ajinkyapatil8190
     - fabianburth
     - frewilhelm
     - jakobmoellerdev
@@ -20,59 +19,44 @@ orgs:
     members:
     - 8R0WNI3
     - a-thaler
-    - achimweigel
     - AleksandarSavchev
     - alexbass01
     - bedirhan-yilmaz
     - BoHristova
     - cbrgm
-    - ccwienk
-    - ChiaraP812
     - ChrisSchneider
-    - dee0
-    - dee0sap
     - Diaphteiros
     - dnaeon
     - enrico-kaack-comp
-    - Franziska-Schallhorn
     - guewa
     - HeckEK
     - heldkat
     - hilmarf
-    - hoeltcl
     - ikhandamirov
     - iljaweis
     - In-Ko
     - JanAms130
     - jneisener
-    - lsroe
     - lukasgr90
     - mandelsoft
     - matthiasbruns
     - maximilianbraun
-    - mayankraipure12
-    - michael-kerr
     - Michael5601
-    - mohammad-ammar14
     - morri-son
     - morrison-sap
-    - n-boshnakov
-    - olzemal
     - piotrjanik
-    - rebEllieous
     - reshnm
     - robertgraeff
     - robertwol
-    - sidhishruti22
     - sk31337
     - Skarlso
-    - sleungcy-sap
-    - Technovation22
     - TomRomeo
     - TorstenD-SAP
     - trevex
     - TuanAnh17N
     - vasu1124
+    - olzemal
+    - rebEllieous
     members_can_create_repositories: true
     name: Open Component Model
     teams:
@@ -89,27 +73,15 @@ orgs:
         members:
         - hilmarf
         - sk31337
-        - dee0
-        - vasu1124
-        - achimweigel
         - reshnm
-        - robertwol
-        - n-boshnakov
         - Diaphteiros
         - In-Ko
         - robertgraeff
         - enrico-kaack-comp
         - guewa
         - maximilianbraun
-        - dee0sap
-        - michael-kerr
         - ikhandamirov
-        - mayankraipure12
-        - mohammad-ammar14
         - BoHristova
-        - Technovation22
-        - sidhishruti22
-        - sleungcy-sap
         privacy: closed
         teams:
           CNLM Core:
@@ -117,9 +89,7 @@ orgs:
             members:
             - hilmarf
             - sk31337
-            - achimweigel
             - reshnm
-            - n-boshnakov
             - Diaphteiros
             - In-Ko
             - robertgraeff
@@ -139,6 +109,7 @@ orgs:
         - cbrgm
         - olzemal
         - rebEllieous
+        - TomRomeo
         privacy: closed
         teams:
           ocm-kit:
@@ -179,8 +150,6 @@ orgs:
         members:
         - ChrisSchneider
         - dnaeon
-        - lsroe
-        - ccwienk
         - AleksandarSavchev
         - TomRomeo
         - TorstenD-SAP
@@ -189,8 +158,6 @@ orgs:
         - TuanAnh17N
         - heldkat
         - JanAms130
-        - Franziska-Schallhorn
-        - ChiaraP812
         - alexbass01
         privacy: closed
       ODG Maintainers:
@@ -220,8 +187,6 @@ orgs:
       Security:
         description: Access to all security data
         members:
-        - ccwienk
-        - hoeltcl
         - morri-son
         - maximilianbraun
         - heldkat
