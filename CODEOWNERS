@@ -20,3 +20,4 @@
 # Per-org config. Add one block per onboarded org; delegate to the org's own
 # admin team here if/when you want them to self-approve membership PRs.
 /orgs/neonephos/                @neonephos/account-administrators
+/orgs/open-component-model/     @open-component-model/admins
