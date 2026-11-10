@@ -70,6 +70,21 @@ orgs:
     - vendoltar
     - artemkovalyov
     teams:
+      Staff:
+        description: People considered NNF Staff
+        maintainers:
+        - christianneu
+        - estherrgarcia
+        - AlexandraHaenig
+        members:
+        - kateluzid
+        - kub3anni
+        - CowFreedom
+        - AlexandraHaenig
+        - banannadreams
+        privacy: closed
+        repos:
+          outreach: maintain
       Outreach Committee:
         description: The members of this team are either part of the Outreach Committee or heavily affiliated with it.
         maintainers:
@@ -79,8 +94,6 @@ orgs:
         - cix-sandmark
         - rquerio
         - kub3anni
-        - gerschu73
-        - othylmann
         - AlexandraHaenig
         - robva-00
         - mkambeck
@@ -105,6 +118,7 @@ orgs:
             - CowFreedom
             members:
             - abuango
+            - AlexandraHaenig
             privacy: closed
             repos:
               outreach: maintain
@@ -115,6 +129,9 @@ orgs:
             members:
             - abuango
             - cix-sandmark
+            - kub3anni
+            - AlexandraHaenig
+            - entlein
             privacy: closed
           'Outreach: Merchandise':
             description: Team of the Merchandise subgroup of the Outreach Committee.
@@ -184,10 +201,10 @@ orgs:
         - fmui
         - tlakner
         - OrlinVasilev
-        - CowFreedom
-        - othylmann
         - ChrisWeissDT
         - stephanstackit
+        - othylmann
+        - OrlinVasilev
         privacy: closed
       website:
         description: ''
