@@ -1,0 +1,207 @@
+# Platform Mesh settings are managed by Safe Settings:
+# https://github.com/platform-mesh/.github
+
+orgs:
+  platform-mesh:
+    default_repository_permission: read
+    admins:
+      - aaronschweig
+      - ntnn
+      - jakobmoellerdev
+      - LF-Europe
+    members:
+      - adiclepcea
+      - ajinkyapatil8190
+      - akafazov
+      - akatyabg
+      - aleksei-paramonov
+      - andreasschlosser
+      - banannadreams
+      - BergCyrill
+      - brsmnv
+      - christianneu
+      - cnvergence
+      - CowFreedom
+      - dkkrastev
+      - dweidenfeld
+      - dwlou
+      - fmui
+      - frewilhelm
+      - friedrichstefan
+      - FWuermse
+      - gkrajniak
+      - gman0
+      - hellsontime
+      - hyperlingg
+      - iakmc
+      - ifdotpy
+      - isanmaz
+      - ivandosev01
+      - ivo-valchev-sap
+      - j-holub
+      - klaus-sap
+      - KoblerS
+      - lpgarzonr
+      - lunarnuts
+      - m-szalik
+      - makdeniss
+      - maradwan
+      - matteokosina
+      - Max-0e
+      - maximilianbraun
+      - mengliwg
+      - michael-behrendt
+      - mirzakopic
+      - mjudeikis
+      - mkambeck
+      - mlenkeit
+      - moelsayed
+      - nexus49
+      - niklasschoenberger
+      - nnicora
+      - nuromirg
+      - ogligorov
+      - OlegErshov
+      - openmfp-technical-user
+      - Palando
+      - Perseus985
+      - philtk79
+      - pm-tech-user
+      - pteich
+      - rdksap
+      - reshnm
+      - robertIsaac
+      - SAP-OSPO-ADMIN
+      - scheeles
+      - Shegox
+      - SheryarButt
+      - SimonBurmer
+      - simontesar
+      - SimonTheLeg
+      - Sobyt483
+      - t-petrova
+      - tjbutz
+      - tobias-oetzel
+      - valentinvieriu
+      - vasu1124
+      - vzipf
+      - xmudrii
+      - xrstf
+      - yevklym
+      - YuliiaPanova-sap
+      - zkdev
+      - zlosch
+    teams:
+      contributors:
+        maintainers:
+        - aaronschweig
+        - ntnn
+        - jakobmoellerdev
+        members:
+        - adiclepcea
+        - akafazov
+        - akatyabg
+        - aleksei-paramonov
+        - andreasschlosser
+        - banannadreams
+        - BergCyrill
+        - brsmnv
+        - cnvergence
+        - CowFreedom
+        - dkkrastev
+        - dweidenfeld
+        - fmui
+        - friedrichstefan
+        - FWuermse
+        - gkrajniak
+        - gman0
+        - hellsontime
+        - hyperlingg
+        - iakmc
+        - ifdotpy
+        - isanmaz
+        - ivandosev01
+        - ivo-valchev-sap
+        - j-holub
+        - klaus-sap
+        - KoblerS
+        - lpgarzonr
+        - lunarnuts
+        - m-szalik
+        - maradwan
+        - matteokosina
+        - Max-0e
+        - maximilianbraun
+        - mengliwg
+        - michael-behrendt
+        - mirzakopic
+        - mjudeikis
+        - mkambeck
+        - mlenkeit
+        - nexus49
+        - niklasschoenberger
+        - nnicora
+        - nuromirg
+        - ogligorov
+        - OlegErshov
+        - Palando
+        - Perseus985
+        - philtk79
+        - pteich
+        - rdksap
+        - robertIsaac
+        - SheryarButt
+        - SimonBurmer
+        - SimonTheLeg
+        - Sobyt483
+        - t-petrova
+        - tjbutz
+        - tobias-oetzel
+        - vasu1124
+        - vzipf
+        - xmudrii
+        - xrstf
+        - yevklym
+        - YuliiaPanova-sap
+        - zkdev
+        - zlosch
+        privacy: closed
+      go-maintainers:
+        members:
+        - aaronschweig
+        - ntnn
+        - akafazov
+        - mjudeikis
+        - OlegErshov
+        - Perseus985
+        - xrstf
+        privacy: closed
+      node-maintainers:
+        members:
+        - gkrajniak
+        - Sobyt483
+        privacy: closed
+      release-managers:
+        members:
+        - mjudeikis
+        - xrstf
+        privacy: closed
+      security:
+        description: Security Response Team
+        members:
+        - aaronschweig
+        - ntnn
+        - gkrajniak
+        - mjudeikis
+        - xrstf
+        privacy: closed
+      tsc:
+        members:
+        - aaronschweig
+        - ntnn
+        - BergCyrill
+        - mengliwg
+        - mirzakopic
+        - mjudeikis
+        - nexus49
+        privacy: closed
