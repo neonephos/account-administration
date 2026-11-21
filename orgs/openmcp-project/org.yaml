@@ -1,0 +1,893 @@
+# openmcp-project settings are managed here:
+# https://github.com/openmcp-project/admin
+
+orgs:
+  openmcp-project:
+    default_repository_permission: read
+    admins:
+      - guewa
+      - jakobmoellerdev
+      - LF-Europe
+      - maximilianbraun
+      - maximiliantech
+      - ntnn
+      - reshnm
+      - ValentinGerlach
+    members:
+      - andreaskienle
+      - AndresNico
+      - christophrj
+      - dattito
+      - Diaphteiros
+      - dwlou
+      - enrico-kaack-comp
+      - frewilhelm
+      - gergely-szabo-sap
+      - Hubert-Szczepanski-SAP
+      - In-Ko
+      - Kukkerem
+      - lucasgoral
+      - matteokosina
+      - MichaelSp
+      - mpechkurov
+      - rdksap
+      - robertgraeff
+      - SatabdiG
+      - schlingemann
+      - sdischer-sap
+      - sk31337
+      - Skarlso
+    teams:
+      Collaborators:
+        privacy: closed
+      Developers:
+        privacy: closed
+      backlog-admin:
+        maintainers:
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        members:
+          - enrico-kaack-comp
+          - robertgraeff
+        privacy: secret
+        repos:
+          backlog: admin
+          docs: admin
+      blueprint-building-blocks-admin:
+        maintainers:
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximiliantech
+          - sk31337
+        privacy: secret
+        repos:
+          blueprint-building-blocks: admin
+      blueprint-workflows-admin:
+        maintainers:
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximiliantech
+          - sk31337
+        privacy: secret
+        repos:
+          blueprint-workflows: admin
+      blueprints-admin:
+        maintainers:
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximiliantech
+          - sk31337
+        privacy: secret
+        repos:
+          blueprints: admin
+      bootstrapper-admin:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          bootstrapper: admin
+      bootstrapper-team:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          bootstrapper: write
+      build-admin:
+        maintainers:
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          build: admin
+      cluster-provider-gardener-admin:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          cluster-provider-gardener: admin
+      cluster-provider-kind-admin:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          cluster-provider-kind: admin
+      cluster-scheduler-admin:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+      community-admin:
+        maintainers:
+          - enrico-kaack-comp
+          - jakobmoellerdev
+          - maximiliantech
+          - rdksap
+          - reshnm
+        privacy: secret
+        repos:
+          community: admin
+      community-team:
+        maintainers:
+          - enrico-kaack-comp
+          - jakobmoellerdev
+          - maximiliantech
+          - rdksap
+          - reshnm
+        privacy: secret
+        repos:
+          community: write
+      control-plane-operator-admin:
+        maintainers:
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          control-plane-operator: admin
+      controller-utils-admin:
+        maintainers:
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        privacy: secret
+      demos-admin:
+        maintainers:
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          demos: admin
+      gitops-templates-admin:
+        maintainers:
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          gitops-templates: admin
+      gitops-templates-team:
+        maintainers:
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          gitops-templates: write
+      homebrew-tap-admin:
+        maintainers:
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          homebrew-tap: admin
+      kubectl-plugin-mcp-admin:
+        maintainers:
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+        privacy: secret
+      landscaper-admin:
+        maintainers:
+          - Diaphteiros
+          - guewa
+          - reshnm
+          - robertgraeff
+        privacy: secret
+        repos:
+          landscaper: admin
+      landscaper-examples-admin:
+        maintainers:
+          - Diaphteiros
+          - guewa
+          - reshnm
+          - robertgraeff
+        privacy: secret
+        repos:
+          landscaper-examples: admin
+      landscaper-examples-team:
+        maintainers:
+          - Diaphteiros
+          - guewa
+          - reshnm
+          - robertgraeff
+        privacy: secret
+        repos:
+          landscaper-examples: write
+      landscaper-service-admin:
+        maintainers:
+          - Diaphteiros
+          - guewa
+          - reshnm
+          - robertgraeff
+        privacy: secret
+        repos:
+          landscaper-service: admin
+      landscaper-service-team:
+        maintainers:
+          - Diaphteiros
+          - guewa
+          - reshnm
+          - robertgraeff
+        privacy: secret
+        repos:
+          landscaper-service: write
+      landscaper-team:
+        maintainers:
+          - Diaphteiros
+          - guewa
+          - reshnm
+          - robertgraeff
+        privacy: secret
+        repos:
+          landscaper: write
+      landscapercli-admin:
+        maintainers:
+          - Diaphteiros
+          - guewa
+          - reshnm
+          - robertgraeff
+        privacy: secret
+        repos:
+          landscapercli: admin
+      landscapercli-team:
+        maintainers:
+          - Diaphteiros
+          - guewa
+          - reshnm
+          - robertgraeff
+        privacy: secret
+        repos:
+          landscapercli: write
+      local-event-showcase-admin:
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+        repos:
+          local-event-showcase: admin
+      local-event-showcase-team:
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+        repos:
+          local-event-showcase: write
+      mcp-operator-admin:
+        maintainers:
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        members:
+          - Kukkerem
+          - robertgraeff
+        privacy: secret
+        repos:
+          mcp-operator: admin
+      metrics-operator-admin:
+        maintainers:
+          - maximilianbraun
+        privacy: secret
+        repos:
+          metrics-operator: admin
+      metrics-operator-team:
+        maintainers:
+          - maximilianbraun
+        privacy: secret
+        repos:
+          metrics-operator: write
+      observability-stack-admin:
+        maintainers:
+          - rdksap
+          - reshnm
+        members:
+          - MichaelSp
+        privacy: secret
+        repos:
+          observability-stack: admin
+      observability-stack-team:
+        maintainers:
+          - rdksap
+          - reshnm
+        privacy: secret
+        repos:
+          observability-stack: write
+      ocm-scout-admin:
+        maintainers:
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximiliantech
+          - ValentinGerlach
+        privacy: secret
+      openmcp-core-admins:
+        maintainers:
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+        members:
+          - robertgraeff
+        privacy: secret
+        repos:
+          landscapercli: admin
+          metrics-operator: admin
+          ocpctl: admin
+          openmcp: admin
+          openmcp-testing: admin
+      openmcp-core-contributors:
+        description: "Core contributors of the project"
+        maintainers:
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        members:
+          - andreaskienle
+          - AndresNico
+          - christophrj
+          - dattito
+          - Diaphteiros
+          - enrico-kaack-comp
+          - Hubert-Szczepanski-SAP
+          - Kukkerem
+          - lucasgoral
+          - matteokosina
+          - rdksap
+          - robertgraeff
+          - sdischer-sap
+          - sk31337
+        privacy: secret
+        repos:
+          backlog: write
+          blueprint-building-blocks: write
+          blueprint-workflows: write
+          blueprints: write
+          bootstrapper: write
+          build: write
+          cluster-provider-gardener: write
+          cluster-provider-kind: write
+          control-plane-operator: write
+          demos: write
+          docs: write
+          homebrew-tap: write
+          mcp-operator: write
+          metrics-operator: write
+          opencontrolplane-runtime: write
+          openmcp-operator: write
+          openmcp-testing: write
+          platform-service-gateway: write
+          platform-service-project-workspace: write
+          platform-service-quota: maintain
+          service-provider-crossplane: write
+          service-provider-flux: write
+          service-provider-kyverno: write
+          service-provider-landscaper: write
+          ui-backend: write
+      openmcp-core-maintainers:
+        description: "All core maintainers"
+        maintainers:
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+        members:
+          - christophrj
+          - Diaphteiros
+          - MichaelSp
+          - rdksap
+          - robertgraeff
+          - schlingemann
+        privacy: secret
+        repos:
+          backlog: maintain
+          blueprint-building-blocks: maintain
+          blueprint-workflows: maintain
+          blueprints: maintain
+          bootstrapper: maintain
+          build: maintain
+          cluster-provider-gardener: maintain
+          cluster-provider-kind: maintain
+          control-plane-operator: maintain
+          demos: maintain
+          docs: maintain
+          homebrew-tap: maintain
+          landscapercli: maintain
+          mcp-operator: maintain
+          metrics-operator: maintain
+          opencontrolplane-runtime: maintain
+          openmcp: maintain
+          openmcp-operator: maintain
+          openmcp-testing: maintain
+          platform-service-gateway: maintain
+          platform-service-project-workspace: maintain
+          platform-service-quota: maintain
+          service-provider-aso: maintain
+          service-provider-crossplane: maintain
+          service-provider-flux: maintain
+          service-provider-ksm: maintain
+          service-provider-kyverno: maintain
+          service-provider-landscaper: maintain
+          service-provider-otel-operator: maintain
+          service-provider-rsm: maintain
+          ui-backend: maintain
+      openmcp-operator-admin:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        members:
+          - rdksap
+        privacy: secret
+        repos:
+          openmcp-operator: admin
+      openmcp-project-openmcp-admin:
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+        repos:
+          openmcp: admin
+      openmcp-project-openmcp-team:
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+        repos:
+          openmcp: write
+      openmcp-steering:
+        description: "The openMCP steering comitee"
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        members:
+          - In-Ko
+        privacy: closed
+      openmcp-testing-admin:
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+        repos:
+          openmcp-testing: admin
+      openmcp-testing-team:
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+      platform-service-dns-admin:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          platform-service-dns: admin
+      platform-service-dns-team:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          platform-service-dns: write
+      platform-service-gateway-admin:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          platform-service-gateway: admin
+      platform-service-gateway-team:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          platform-service-gateway: write
+      platform-service-test-runner-admin:
+        maintainers:
+          - Diaphteiros
+          - In-Ko
+          - maximiliantech
+          - rdksap
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          platform-service-test-runner: admin
+      platform-service-test-runner-team:
+        maintainers:
+          - Diaphteiros
+          - In-Ko
+          - maximiliantech
+          - rdksap
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          platform-service-test-runner: write
+      project-workspace-operator-admin:
+        maintainers:
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          platform-service-project-workspace: admin
+      provider-upgrade-test-admin:
+        privacy: secret
+        repos:
+          provider-upgrade-test: admin
+      provider-upgrade-test-team:
+        privacy: secret
+        repos:
+          provider-upgrade-test: write
+      quota-operator-admin:
+        maintainers:
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          platform-service-quota: admin
+      rollout-operator-admin:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - schlingemann
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          rollout-operator: admin
+      rollout-operator-team:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - schlingemann
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          rollout-operator: write
+      service-provider-argocd-admin:
+        maintainers:
+          - jakobmoellerdev
+        privacy: secret
+        repos:
+          service-provider-argocd: maintain
+      service-provider-argocd-team:
+        maintainers:
+          - jakobmoellerdev
+        privacy: secret
+        repos:
+          service-provider-argocd: write
+      service-provider-crossplane-admin:
+        maintainers:
+          - dattito
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          service-provider-crossplane: admin
+      service-provider-eso-admin:
+        maintainers:
+          - christophrj
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+      service-provider-eso-team:
+        maintainers:
+          - christophrj
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+      service-provider-flux-admin:
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          service-provider-flux: admin
+      service-provider-flux-team:
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+          - reshnm
+          - ValentinGerlach
+        privacy: secret
+      service-provider-kyverno-admin:
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+        repos:
+          service-provider-kyverno: admin
+      service-provider-kyverno-team:
+        maintainers:
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+      service-provider-landscaper-admin:
+        maintainers:
+          - Diaphteiros
+          - dwlou
+          - guewa
+          - In-Ko
+          - maximiliantech
+          - reshnm
+          - robertgraeff
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          service-provider-landscaper: admin
+      service-provider-template-admin:
+        maintainers:
+          - christophrj
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+        repos:
+          service-provider-template: admin
+      service-provider-template-team:
+        maintainers:
+          - christophrj
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+        repos:
+          service-provider-template: write
+      sig-core-maintainers:
+        description: "Maintainers for SIG-Core Projects"
+        maintainers:
+          - Diaphteiros
+          - rdksap
+          - reshnm
+          - ValentinGerlach
+        privacy: closed
+        repos:
+          controller-utils: maintain
+      sig-extensibility-approvers:
+        description: "SIG Extensibility Approvers, see https://github.com/openmcp-project/community/tree/main/sig-extensibility#roles-and-responsibilities"
+        maintainers:
+          - christophrj
+          - maximiliantech
+        privacy: closed
+        repos:
+          cluster-provider-gardener: maintain
+          cluster-provider-kind: maintain
+          opencontrolplane-gen: maintain
+          opencontrolplane-runtime: maintain
+          openmcp-testing: maintain
+          platform-service-template: maintain
+          service-provider-aso: maintain
+          service-provider-crossplane: maintain
+          service-provider-external-secrets: maintain
+          service-provider-flux: maintain
+          service-provider-kro: maintain
+          service-provider-landscaper: maintain
+          service-provider-metrics-operator: maintain
+          service-provider-template: maintain
+          service-provider-velero: maintain
+      sig-ui-approvers:
+        description: "Approvers for UI relevant stuff"
+        members:
+          - andreaskienle
+          - Hubert-Szczepanski-SAP
+          - lucasgoral
+        privacy: closed
+        repos:
+          crossplane-headlamp-plugin: maintain
+          opencontrolplane-headlamp-helmchart: maintain
+          opencontrolplane-headlamp-plugin: maintain
+          ui-frontend: write
+      ui-backend-admin:
+        maintainers:
+          - dwlou
+          - enrico-kaack-comp
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+        privacy: secret
+        repos:
+          ui-backend: admin
+      ui-frontend-admin:
+        maintainers:
+          - dwlou
+          - enrico-kaack-comp
+          - guewa
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+        members:
+          - andreaskienle
+        privacy: secret
+        repos:
+          ui-frontend: admin
+      usage-operator-admin:
+        maintainers:
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          usage-operator: admin
+      usage-operator-team:
+        maintainers:
+          - In-Ko
+          - maximilianbraun
+          - maximiliantech
+          - ValentinGerlach
+        privacy: secret
+        repos:
+          usage-operator: write
