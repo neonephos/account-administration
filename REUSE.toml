@@ -1,0 +1,10 @@
+version = 1
+SPDX-PackageName = "account-administration"
+SPDX-PackageSupplier = "NeoNephos Foundation contributors"
+SPDX-PackageDownloadLocation = "https://github.com/neonephos/account-administration"
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "NeoNephos Foundation contributors"
+SPDX-License-Identifier = "Apache-2.0"
