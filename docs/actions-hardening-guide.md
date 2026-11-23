@@ -266,8 +266,33 @@ jobs:
 ✅ `uses: some-org/some-action@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v2.3.1`
 
 - Applies to **reusable workflows** too (`uses: org/repo/.github/workflows/x.yaml@<sha>`).
+- Applies **transitively**: with *Require SHA pinning* enabled, every `uses:` inside a composite action (`action.yml`), local action (`./.github/actions/...`) or reusable workflow you call must be pinned as well. Pinning only your own workflow file is not enough.
 - Shared internal workflows/actions: if you can't pin, at minimum protect the branch and tags they're consumed from (required reviews, no force push, tag protection).
 - Let Renovate or Dependabot keep SHA pins current (see [Part 7](#part-7-tooling)).
+
+#### Troubleshooting "must be pinned to a full-length commit SHA"
+
+```text
+The action actions/setup-node@v4 is not allowed in my-org/my-repo because all actions must be pinned to a full-length commit SHA.
+```
+
+Your workflow file is already pinned but the job still fails? Check, in order:
+
+1. **Which action does the error name?** If it is not in your workflow file, it comes from a nested `uses:` in a composite action or reusable workflow you call:
+
+   ```yaml
+   # your workflow: pinned
+   - uses: some-org/setup-tool@<sha> # v1.2.0
+
+   # action.yml in some-org/setup-tool: not pinned → blocked
+   runs:
+     using: composite
+     steps:
+       - uses: actions/setup-node@v4
+   ```
+
+   Fix it where the reference lives: pin inside the action/workflow, then bump the SHA you consume. For external actions, open an issue/PR upstream, switch to an alternative that pins, or fork it into the org and pin there.
+2. **Which commit did the run use?** A run uses the workflow file from the commit it was triggered on. "Re-run" of an old run, branches/PRs not yet rebased onto the pinning commit, and release branches keep failing. Check the commit in the run summary; rebase or merge, then trigger a fresh run.
 
 ### 3.6 Caches and artifacts
 
