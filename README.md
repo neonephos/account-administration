@@ -13,6 +13,9 @@ Tooling and process for administering organizations in the
 - **Org migration** — guideline and issue template for transferring an
   organization into the enterprise. See
   [docs/migration-guideline.md](docs/migration-guideline.md).
+- **GitHub Actions hardening** — enterprise-wide CI security baseline for
+  org owners and maintainers. See
+  [docs/actions-hardening-guide.md](docs/actions-hardening-guide.md).
 
 ## Quick start
 
