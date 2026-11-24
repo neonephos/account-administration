@@ -232,6 +232,7 @@ orgs:
         - oliver-goetz
         - OrlinVasilev
         - damyan
+        - hardl
         privacy: closed
         repos:
           compliance-scan: maintain
