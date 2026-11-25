@@ -111,8 +111,6 @@ orgs:
       # https://github.com/openmcp-project/community/blob/main/steering/OWNERS.md
       tsc:
         description: OpenControlPlane Technical Steering Committee
-        previously:
-          - openmcp-steering
         privacy: closed
         members:
           - maximilianbraun
