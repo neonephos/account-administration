@@ -85,8 +85,8 @@ tasks:
   reconcile:
     desc: "Reconcile an org (dry-run unless CONFIRM=true) — needs ORG=<org>"
     vars:
-      # false for orgs whose team repository grants are owned elsewhere.
-      # Local override: FIX_TEAM_REPOS=true|false (use only for a reviewed handoff).
+      # true unless ORG is listed in ORGS_WITHOUT_TEAM_REPOS; override with
+      # FIX_TEAM_REPOS=true|false.
       FIX_TEAM_REPOS: '{{.FIX_TEAM_REPOS | default (has .ORG (splitList " " .ORGS_WITHOUT_TEAM_REPOS) | ternary "false" "true")}}'
     requires:
       vars: [ORG, GITHUB_TOKEN]
