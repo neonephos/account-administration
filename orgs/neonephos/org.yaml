@@ -27,14 +27,18 @@ orgs:
     # depend on this. Internal repos keep a read floor for enterprise members
     # regardless of this setting.
     default_repository_permission: none
+    # Owner roster (ORG-OWNER-COUNT, SEC §9.5 least privilege): exactly the
+    # accounts that exercised owner-level rights in the audit log, plus the
+    # foundation continuity accounts LF-Europe and thelinuxfoundation. Those
+    # two are foundation staff accounts, exempt from the owner baseline
+    # (compliance-scan `foundationAccounts`), and are kept as owners on
+    # purpose. Everyone else administers through the enterprise owner role,
+    # which is audited when it is used. See the pull request body for the
+    # per-account evidence.
     admins:
     - estherrgarcia
-    - idvoretskyi
     - jakobmoellerdev
-    - jmertic
     - LF-Europe
-    - renuchauhan221
-    - Shegox
     - thelinuxfoundation
     members:
     - abuango
@@ -64,7 +68,9 @@ orgs:
     - gerschu73
     - gehoern
     - guewa
+    - idvoretskyi
     - janlepsky
+    - jmertic
     - maximiliantech
     - Michael5601
     - mcherbie23
@@ -81,10 +87,12 @@ orgs:
     - peter-giese
     - PriyankaSakundarwarSun
     - rdksap
+    - renuchauhan221
     - robva-00
     - rquerio
     - ScheererJ
     - SebastianWolf-SAP
+    - Shegox
     - Skarlso
     - stephanstackit
     - tlakner
@@ -254,6 +262,30 @@ orgs:
           compliance-scan: triage
           Sandbox: read
           gb: maintain
+      staff:
+        # Re-declares the `staff` team that was created in the UI on
+        # 2026-10-15 and deleted again by peribolos on 2026-11-10 because it
+        # was never written down here. Membership is the set the team had when
+        # it was deleted, plus the foundation staff accounts that otherwise
+        # belong to no team (ORG-MEMBER-TEAMLESS).
+        #
+        # No `repos:` block on purpose: this team groups people, it grants no
+        # repository access. The deleted team had `gb` and `metadata`; both are
+        # left as direct grants so that this pull request changes no
+        # permissions.
+        description: NeoNephos foundation, PMO and community staff accounts
+        maintainers:
+        - estherrgarcia
+        members:
+        - AlexandraHaenig
+        - banannadreams
+        - christianneu
+        - CowFreedom
+        - idvoretskyi
+        - jmertic
+        - LF-Europe
+        - thelinuxfoundation
+        privacy: closed
       website:
         description: ''
         maintainers:
