@@ -81,8 +81,6 @@ orgs:
       # https://github.com/openmcp-project/community/blob/main/sig-core/README.md
       sig-core-approvers:
         description: SIG Core technical approvers
-        previously:
-          - sig-core-maintainers
         privacy: closed
         members:
           - Diaphteiros
