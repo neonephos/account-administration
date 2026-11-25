@@ -47,13 +47,12 @@ orgs:
       contributors:
         description: OpenControlPlane contributors
         privacy: closed
-        maintainers:
+        members:
           - ValentinGerlach
           - reshnm
           - maximiliantech
           - guewa
           - n3rdc4ptn
-        members:
           - andreaskienle
           - AndresNico
           - christophrj
@@ -85,13 +84,13 @@ orgs:
         previously:
           - sig-core-maintainers
         privacy: closed
-        maintainers:
+        members:
           - Diaphteiros
           - maximiliantech
       sig-core-owners:
         description: SIG Core governance owners
         privacy: closed
-        maintainers:
+        members:
           - rdksap
           - maximiliantech
       # Roles and Responsibilities:
@@ -99,13 +98,13 @@ orgs:
       sig-extensibility-approvers:
         description: SIG Extensibility technical approvers
         privacy: closed
-        maintainers:
+        members:
           - christophrj
           - maximiliantech
       sig-extensibility-owners:
         description: SIG Extensibility governance owners
         privacy: closed
-        maintainers:
+        members:
           - christophrj
           - maximiliantech
       # Current chair and voting members (not emeritus members):
@@ -115,9 +114,8 @@ orgs:
         previously:
           - openmcp-steering
         privacy: closed
-        maintainers:
-          - maximilianbraun
         members:
+          - maximilianbraun
           - GenosseOtt
           - In-Ko
           - maximiliantech
@@ -127,9 +125,8 @@ orgs:
       sig-ui-approvers:
         description: Approvers for UI projects
         privacy: closed
-        maintainers:
-          - n3rdc4ptn
         members:
+          - n3rdc4ptn
           - andreaskienle
           - Hubert-Szczepanski-SAP
           - lucasgoral
