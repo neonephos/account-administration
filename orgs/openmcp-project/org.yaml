@@ -43,6 +43,8 @@ orgs:
       - sdischer-sap
       - sk31337
       - Skarlso
+      - Peter-Sternberger
+      - s4heid
     teams:
       contributors:
         description: OpenControlPlane contributors
@@ -77,6 +79,8 @@ orgs:
           - sdischer-sap
           - sk31337
           - Skarlso
+          - Peter-Sternberger
+          - s4heid
       # Roles and Responsibilities:
       # https://github.com/openmcp-project/community/blob/main/sig-core/README.md
       sig-core-approvers:
