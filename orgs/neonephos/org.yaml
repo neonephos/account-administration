@@ -57,6 +57,7 @@ orgs:
     - Fannon
     - fmui
     - gehoern
+    - gonzolino
     - hardl
     - KateLuzid
     - hendrikKahl
@@ -233,6 +234,7 @@ orgs:
         - OrlinVasilev
         - damyan
         - hardl
+        - gonzolino
         privacy: closed
         repos:
           compliance-scan: maintain
